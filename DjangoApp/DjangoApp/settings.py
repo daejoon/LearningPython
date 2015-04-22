@@ -107,6 +107,9 @@ STATICFILES_DIRS = (
 )
 STATIC_URL = '/static/'
 
+MY_SETTING = {
+    'version': '20150422'
+}
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
