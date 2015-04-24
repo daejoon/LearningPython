@@ -4,9 +4,9 @@ from quicksilver.decorations.set_variable import setTplViewVariable
 class HomeView(TemplateView):
     template_name = 'home.html'
 
-    # @setVariable("appName", "Home")
-    def get(self, request, *args, **kwargs):
-        context = super(HomeView, self).get(request, *args, **kwargs)
-        context['test'] = [1, 2, 3, 4, 5]
+    @setTplViewVariable("appName", "Home")
+    @setTplViewVariable("title", "AngularJS")
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
         return context
 
