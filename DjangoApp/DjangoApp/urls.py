@@ -5,8 +5,5 @@ from DjangoApp import views
 urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name="home"),
     url(r'^admin/', include(admin.site.urls)),
-
-
-    url(r'^books/', include('books.urls', namespace="books")),
-    url(r'^angular/', include('angular.urls', namespace="angular")),
+    url(r'^quicksilver/', include('quicksilver.urls', namespace='quicksilver')),
 ]

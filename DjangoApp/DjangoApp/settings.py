@@ -37,8 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'books',
-    'angular',
+    'quicksilver',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,10 +110,6 @@ MY_SETTING = {
     'version': '20150422'
 }
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
-)
-
 # logging
 LOGGING = {
     'version': 1,
@@ -134,13 +129,9 @@ LOGGING = {
         },
     },
     'logger': {
-        'books': {
+        'quicksilver': {
             'handlers': ['file'],
             'level': 'DEBUG',
         },
-        'angular': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-        }
     }
 }
