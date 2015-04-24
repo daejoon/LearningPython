@@ -1,3 +1,4 @@
+# coding=UTF-8
 """
 Django settings for DjangoApp project.
 
@@ -106,10 +107,6 @@ STATICFILES_DIRS = (
 )
 STATIC_URL = '/static/'
 
-MY_SETTING = {
-    'version': '20150422'
-}
-
 # logging
 LOGGING = {
     'version': 1,
@@ -134,4 +131,9 @@ LOGGING = {
             'level': 'DEBUG',
         },
     }
+}
+
+# 개인 설정
+MY_SETTING = {
+    'version': '20150422'
 }

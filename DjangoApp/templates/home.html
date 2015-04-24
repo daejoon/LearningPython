@@ -1,9 +1,18 @@
 {% extends "base.html" %}
+{% load angularjs_tags %}
 {% block title %}{{ title }}{% endblock title %}
 {% block content %}
 
-    Hello AngularJS World
+    <div ng-init="title='Hello, AngularJS World'">
+    {% ng title %}
+    </div>
 
 {% endblock content %}
 {% block script %}
+    <script>
+        angular.module('Home', [])
+                .config(function () {
+
+                });
+    </script>
 {% endblock script %}
