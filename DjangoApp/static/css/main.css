@@ -1,0 +1,27 @@
+html, body {
+    height: 100%;
+}
+
+.border-zero {border:0px !important;}
+.padding-zero {padding:0px !important;}
+.padding-left-right-5px {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.margin-btm-zero {margin-bottom: 0px !important;}
+
+.fill-width {width: 100% !important;}
+.fill-height {
+    height: 100% !important;
+    min-height: 100% !important;
+}
+.fill{
+    width:100% !important;
+    height:100% !important;
+    min-height:100% !important;
+}
+
+.bgcolor-ddd {
+    background-color: #ddd;
+}

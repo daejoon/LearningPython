@@ -1,4 +1,4 @@
-# coding=UTF-8
+# -*- coding: utf-8 -*-
 """
 Django settings for DjangoApp project.
 
@@ -116,8 +116,19 @@ LOGGING = {
             'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
             'datefmt': "%d/%b/%Y %H:%M:%S"
         },
+        'simple': {
+            'format': '[%(levelname)s] %(message)s'
+        },
     },
     'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
@@ -126,9 +137,15 @@ LOGGING = {
         },
     },
     'logger': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
         'quicksilver': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
         },
     }
 }

@@ -2,10 +2,119 @@
 {% load angularjs_tags %}
 {% block title %}{{ title }}{% endblock title %}
 {% block content %}
-
-    <div ng-init="title='Hello, AngularJS World'">
-        {% ng title %}
+<div class="container pull-left fill">
+    <div class="row table-bordered fill-height">
+        <div class="col-md-2 table-bordered fill-height">
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <h5>
+                        <a href="#"><i class="fa fa-plus"></i> New NoteBook</a>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <h5>
+                        Notebooks
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <div class="list-group">
+                        <!-- loop -->
+                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> Java <span class="badge">10</span></a>
+                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> Python <span class="badge">10</span></a>
+                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> C# <span class="badge">10</span></a>
+                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> JavaScript <span class="badge">10</span></a>
+                        <!--// loop -->
+                        <a href="#" class="list-group-item"><i class="fa fa-trash-o"></i> Trash <span class="badge">10</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <h5>
+                        Recent Notes
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <div class="list-group">
+                        <!-- loop -->
+                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o"></i> Java </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o"></i> Python </a>
+                        <!--// loop -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 table-bordered fill-height">
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <h5>
+                        <a href="#"><i class="fa fa-plus"></i> New Note</a>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <h5>
+                        Note
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <div class="list-group">
+                        <!-- loop -->
+                        <a href="#" class="list-group-item">
+                            <h5 class="list-group-item-heading">자바란?</h5>
+                            <p class="list-group-item-text">2015.01.08</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h5 class="list-group-item-heading">문법</h5>
+                            <p class="list-group-item-text">2015.01.08</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h5 class="list-group-item-heading">클래스</h5>
+                            <p class="list-group-item-text">2015.01.08</p>
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <h5 class="list-group-item-heading">다형성</h5>
+                            <p class="list-group-item-text">2015.01.08</p>
+                        </a>
+                        <!--//loop -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 table-bordered fill-height">
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <h5>
+                        <a href="#"><i class="fa fa-caret-square-o-left fa-lg"></i><a/>
+                        <a href="#"><i class="fa fa-caret-square-o-right fa-lg"></i></a>
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 padding-left-right-5px">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Python은 재미있나요? </h3>
+                        </div>
+                        <div class="panel-body">
+                            파이썬은 참 재미있는 언어입니다.
+                            그리고 AngularJS는 더 재미있습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
 {% endblock content %}
 {% block script %}
