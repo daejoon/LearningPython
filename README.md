@@ -10,7 +10,8 @@
 - underscorejs
 - summernote
 - bootstrap
-- font-awesmoe
+- bootstrap-contextmenu
+- font-awesome
 - angularJS
 - angular-summernote
 - angular-ui-bootstrap
