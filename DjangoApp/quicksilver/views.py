@@ -3,7 +3,7 @@ from quicksilver.decorations.set_variable import setTplViewVariable
 
 # Create your views here.
 class HomeView(TemplateView):
-    template_name = 'home.html'
+    template_name = 'quicksilver/home.html'
 
     @setTplViewVariable("appName", "Home")
     @setTplViewVariable("title", "QuickSilver")
