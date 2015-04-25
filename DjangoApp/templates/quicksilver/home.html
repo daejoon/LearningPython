@@ -4,11 +4,11 @@
 {% block content %}
 <div class="container pull-left fill">
     <div class="row table-bordered fill-height">
-        <div class="col-md-2 table-bordered fill-height">
+        <div class="col-md-2 table-bordered fill-height" ng-controller="notebookCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
-                        <a href="#"><i class="fa fa-plus"></i> New NoteBook</a>
+                        <a href="#" ng-click="newNotebook()"><i class="fa fa-plus"></i> New NoteBook</a>
                     </h5>
                 </div>
             </div>
@@ -21,15 +21,33 @@
             </div>
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
+                    <form class="form-inline">
                     <div class="list-group">
                         <!-- loop -->
-                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> Java <span class="badge">10</span></a>
-                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> Python <span class="badge">10</span></a>
-                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> C# <span class="badge">10</span></a>
-                        <a href="#" class="list-group-item"><i class="fa fa-book"></i> JavaScript <span class="badge">10</span></a>
-                        <!--// loop -->
-                        <a href="#" class="list-group-item"><i class="fa fa-trash-o"></i> Trash <span class="badge">10</span></a>
+                        <a href="#"
+                                class="list-group-item"
+                                ng-repeat="item in notebookList"
+                                ng-click="selectNotebook($index)"
+                                context-menu="showContextMenu($index)"
+                                context-menu-close="hideContextMenu($index)"
+                                context-menu-disabled="false"
+                                data-target="notebook-contextmenu"
+                                ng-switch="item.isModify">
+                            <i class="fa" ng-class="{'fa-trash-o': {% ng $last === true %}, 'fa-book': {% ng $last === false %}}"></i>
+                            <span class="label-inputctrl" ng-switch-when="false" ng-dblclick="doModify($index)">
+                                {% ng item.title %}
+                            </span>
+                            <span class="label-inputctrl" ng-switch-when="true">
+                                <input type="text" class="form-control input-mini input-sm"
+                                       ng-model="item.title"
+                                       ng-keypress="keyPress($event)"
+                                        id="notebook-title-{% ng $index %}">
+                            </span>
+                            <span class="badge">{% ng item.noteCnt %}</span>
+                        </a>
+                        <!--//loop-->
                     </div>
+                    </form>
                 </div>
             </div>
             <div class="row">
@@ -43,14 +61,16 @@
                 <div class="col-md-12 padding-left-right-5px">
                     <div class="list-group">
                         <!-- loop -->
-                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o"></i> Java </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o"></i> Python </a>
+                        <a href="#" class="list-group-item" ng-repeat="item in recentNoteList">
+                            <i class="fa fa-file-text-o"></i>
+                            <span>{% ng item.title %}</span>
+                        </a>
                         <!--// loop -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-2 table-bordered fill-height">
+        <div class="col-md-2 table-bordered fill-height" ng-controller="noteCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
@@ -67,30 +87,22 @@
             </div>
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
-                    <div class="list-group">
+                    <div class="list-group" >
                         <!-- loop -->
-                        <a href="#" class="list-group-item">
-                            <h5 class="list-group-item-heading">자바란?</h5>
-                            <p class="list-group-item-text">2015.01.08</p>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h5 class="list-group-item-heading">문법</h5>
-                            <p class="list-group-item-text">2015.01.08</p>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h5 class="list-group-item-heading">클래스</h5>
-                            <p class="list-group-item-text">2015.01.08</p>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h5 class="list-group-item-heading">다형성</h5>
-                            <p class="list-group-item-text">2015.01.08</p>
+                        <a href="#"
+                           class="list-group-item"
+                           ng-repeat="item in noteList"
+                           context-menu="showContextMenu($index)"
+                           data-target="note-contextmenu">
+                            <h5 class="list-group-item-heading">{% ng item.title %}</h5>
+                            <p class="list-group-item-text">{% ng item.regDate %}</p>
                         </a>
                         <!--//loop -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8 table-bordered fill-height">
+        <div class="col-md-8 table-bordered fill-height" ng-controller="contentCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
@@ -103,10 +115,12 @@
                 <div class="col-md-12 padding-left-right-5px">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Python은 재미있나요? </h3>
+                            <h3 class="panel-title">
+                                <input type="text" class="form-control" ng-model="note.title" />
+                            </h3>
                         </div>
-                        <div class="panel-body" ng-controller="summernoteCtrl">
-                            <summernote config="options"></summernote>
+                        <div class="panel-body">
+                            <summernote config="options" ng-model="note.content"></summernote>
                         </div>
                     </div>
                 </div>
@@ -115,21 +129,148 @@
     </div>
 </div>
 
+<div id="notebook-contextmenu" class="dropdown position-fixed" ng-controller="notebookContextMenuCtrl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a tabindex="1" href="#" ng-click="renameNotebook($event)">Rename Notebook</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a tabindex="2" href="#" ng-click="deleteNotebook($event)">Delete Notebook</a></li>
+        <li><a tabindex="3" href="#" ng-click="emptyTrash($event)">Empty Trash</a></li>
+    </ul>
+</div>
+
+<div id="note-contextmenu" class="dropdown position-fixed" ng-controller="noteContextMenuCtrl">
+    <ul class="dropdown-menu" role="menu">
+        <li><a tabindex="1" href="#">Duplicate Notebook</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a tabindex="2" href="#">Delete Notebook</a></li>
+    </ul>
+</div>
 {% endblock content %}
+
 {% block script %}
 <script>
-    angular.module('Home', ['summernote'])
-            .config(function () {
-            })
-            .controller('summernoteCtrl', ['$scope', function ($scope) {
-                $scope.options = {
-                    lang: 'ko-KR',
-                    height: 600,
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    focus: true,
-                    tabsize: 4
-                };
-            }]);
+angular.module('Home', ['summernote', 'ng-context-menu'])
+        .config(function () {
+        })
+        .controller('notebookCtrl', ['$scope', '$element', function($scope, $element) {
+            $scope.notebookList = [
+                {title: 'Java', noteCnt:1, isModify:false},
+                {title: 'Python', noteCnt:10, isModify:false},
+                {title: 'AngularJs', noteCnt:20, isModify:false},
+                {title: 'Trash', noteCnt:5, isModify:false}
+            ];
+
+            $scope.recentNoteList = [
+                {title: 'Python이란', regDate:'2015.01.08'},
+                {title: 'Django', regDate:'2015.01.08'},
+                {title: '클래스', regDate:'2015.01.08'},
+            ];
+
+            $scope.newNotebook = function () {
+                $scope.notebookList.unshift({
+                    title: 'untitle', noteCnt:0, isModify:false
+                })
+            };
+
+            $scope.notebookListIndex = -1;
+            $scope.showContextMenu = function ($index) {
+                // 마지막 요소인지 검사한다.
+                if ( $index+1 === $scope.notebookList.length ) {
+                    $("#notebook-contextmenu")
+                            .find("li")
+                            .hide()
+                        .end()
+                            .find("li")
+                            .last()
+                            .show();
+                } else {
+                    $("#notebook-contextmenu")
+                            .find("li")
+                            .show()
+                        .end()
+                            .find("li")
+                            .last()
+                            .hide();
+                }
+
+                $scope.notebookListIndex = $index;
+            };
+
+            $scope.hideContextMenu = function ($index) {
+                console.log($index);
+            };
+
+            $scope.selectNotebook = function ($index) {
+                console.log($index);
+            };
+
+            $scope.keyPress = function (e) {
+                if ( e.which === 13 ) {
+                    $scope.notebookList[$scope.notebookListIndex].isModify = false;
+                }
+            };
+
+            $scope.doModify = function ($index) {
+                $scope.notebookListIndex = $index;
+                $scope.notebookList[$index].isModify = true;
+            };
+
+            $scope.$on("notebookCtrl:renameNotebook", function (e) {
+                $scope.notebookList[$scope.notebookListIndex].isModify = true;
+            });
+
+            $scope.$on("notebookCtrl:deleteNotebook", function (e) {
+                $scope.notebookList.splice($scope.notebookListIndex,1);
+            });
+
+            $scope.$on("notebookCtrl:emptyTrash", function (e) {
+                $scope.notebookList[$scope.notebookList.length-1].noteCnt = 0;
+            });
+
+        }])
+        .controller('notebookContextMenuCtrl', ['$scope', '$rootScope', '$element', function($scope, $rootScope, $element) {
+            $scope.renameNotebook = function () {
+                $rootScope.$broadcast("notebookCtrl:renameNotebook");
+                $element.removeClass("open");
+            };
+
+            $scope.deleteNotebook = function () {
+                $rootScope.$broadcast("notebookCtrl:deleteNotebook");
+                $element.removeClass("open");
+            };
+
+            $scope.emptyTrash = function () {
+                $rootScope.$broadcast("notebookCtrl:emptyTrash");
+                $element.removeClass("open");
+            };
+        }])
+        .controller('noteCtrl', ['$scope', function($scope) {
+            $scope.noteList = [
+                {title: 'Python이란', regDate:'2015.01.08'},
+                {title: 'Django', regDate:'2015.01.08'},
+                {title: '클래스', regDate:'2015.01.08'},
+            ];
+
+            $scope.showContextMenu = function ($index) {
+                cosole.log($index);
+            };
+        }])
+        .controller('noteContextMenuCtrl', ['$scope', '$rootScope', function($scope) {
+        }])
+        .controller('contentCtrl', ['$scope', function ($scope) {
+            $scope.options = {
+                lang: 'ko-KR',
+                height: 600,
+                minHeight: null,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+                focus: true,
+                tabsize: 4
+            };
+
+            $scope.note = {
+                title: '파이썬의 이해?',
+                content: '파이썬은 쉽고 재미있습니다.'
+            };
+        }]);
 </script>
 {% endblock script %}
