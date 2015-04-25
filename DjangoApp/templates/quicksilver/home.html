@@ -94,7 +94,7 @@
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
-                        <a href="#"><i class="fa fa-caret-square-o-left fa-lg"></i><a/>
+                        <a href="#"><i class="fa fa-caret-square-o-left fa-lg"></i></a>
                         <a href="#"><i class="fa fa-caret-square-o-right fa-lg"></i></a>
                     </h5>
                 </div>
@@ -105,9 +105,8 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">Python은 재미있나요? </h3>
                         </div>
-                        <div class="panel-body">
-                            파이썬은 참 재미있는 언어입니다.
-                            그리고 AngularJS는 더 재미있습니다.
+                        <div class="panel-body" ng-controller="summernoteCtrl">
+                            <summernote config="options"></summernote>
                         </div>
                     </div>
                 </div>
@@ -118,10 +117,19 @@
 
 {% endblock content %}
 {% block script %}
-    <script>
-        angular.module('Home', [])
-                .config(function () {
-
-                });
-    </script>
+<script>
+    angular.module('Home', ['summernote'])
+            .config(function () {
+            })
+            .controller('summernoteCtrl', ['$scope', function ($scope) {
+                $scope.options = {
+                    lang: 'ko-KR',
+                    height: 600,
+                    minHeight: null,             // set minimum height of editor
+                    maxHeight: null,             // set maximum height of editor
+                    focus: true,
+                    tabsize: 4
+                };
+            }]);
+</script>
 {% endblock script %}
