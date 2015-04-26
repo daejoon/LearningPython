@@ -1,8 +1,8 @@
 (function (angular, $, _, console) {
     angular.module('quicksilver.controller')
         .controller('noteCtrl', [
-            '$scope', 'noteSvc',
-            function ($scope, noteSvc) {
+            '$scope', '$q', 'noteSvc',
+            function ($scope, $q, noteSvc) {
                 $scope.options = {
                     lang: 'ko-KR',
                     height: 550,
@@ -11,8 +11,11 @@
                     focus: true,
                     tabsize: 4
                 };
+                $scope.note = {};
 
-                $scope.note = noteSvc.getNote();
+                $scope.$on("noteCtrl:selectNote", function (e, noteObj) {
+                    $scope.note = noteObj;
+                });
         }]);
 })(angular, jQuery, _, window.console&&window.console||{
     log: function() {},

@@ -4,11 +4,15 @@
     angular.module('quicksilver.service' , []);
 
     angular.module('quicksilver')
-        .config(['$routeProvider', function ($routeProvider) {
-            console.debug("config");
-            $routeProvider
-                .when("/note", {templateUrl: 'quicksilver/tpl/note', controller: 'noteCtrl'});
-        }])
+        .config([
+            '$routeProvider', '$httpProvider',
+            function ($routeProvider, $httpProvider) {
+                console.debug("config");
+                $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+                $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+                $routeProvider
+                    .when("/note", {templateUrl: 'quicksilver/tpl/note', controller: 'noteCtrl'});
+            }])
         .run(function() {
             console.debug("run");
             location.href = "#/note";

@@ -1,8 +1,8 @@
 (function (angular, $, _, console) {
     angular.module('quicksilver.controller')
         .controller('noteListCtrl', [
-            '$scope', '$q', 'noteListSvc',
-            function($scope, $q, noteListSvc) {
+            '$scope', '$rootScope', '$q', 'noteListSvc', 'quicksilverModelSvc',
+            function($scope, $rootScope, $q, noteListSvc, quicksilverModelSvc) {
                 $scope.noteList = [];
                 $scope.noteListIndex = -1;
 
@@ -12,19 +12,17 @@
                 };
 
                 $scope.newNote = function ($event) {
-                    $scope.noteList.unshift({
-                        title: 'untitle',
-                        regDate: ''
-                    });
+                    $scope.noteList.unshift(quicksilverModelSvc.createNote());
+                };
+
+                $scope.selectNote = function($index) {
+                    $scope.noteListIndex = $index;
+                    $rootScope.$broadcast("noteCtrl:selectNote", $scope.noteList[$index]);
                 };
 
                 $scope.$on("noteListCtrl:duplicateNote", function (e) {
                     var copyItem = $scope.noteList[$scope.noteListIndex];
-                    $scope.noteList.unshift({
-                        title: copyItem.title,
-                        regDate: copyItem.regDate
-                    });
-
+                    $scope.noteList.unshift(quicksilverModelSvc.copyModel(copyItem));
                 });
 
                 $scope.$on("noteListCtrl:deleteNote", function (e) {

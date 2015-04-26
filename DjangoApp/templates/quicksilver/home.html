@@ -3,6 +3,7 @@
 {% load settings_tags %}
 {% load angularjs_tags %}
 {% get_my_setting as MY_SETTING %}
+{% csrf_token %}
 
 {% block title %}{{ title }}{% endblock title %}
 {% block content %}
@@ -44,8 +45,8 @@
                             <span ng-switch-when="true">
                                 <input type="text" class="form-control input-mini input-sm"
                                        ng-model="item.title"
-                                       ng-keypress="keyPress($event)"
-                                        id="notebook-title-{% ng $index %}">
+                                       ng-keypress="keyPress($event, $index)"
+                                       id="notebook-title-{% ng $index %}">
                             </span>
                             <span class="badge">{% ng item.noteCnt %}</span>
                         </a>
@@ -98,10 +99,11 @@
                         <a href=""
                            class="list-group-item"
                            ng-repeat="item in noteList"
+                           ng-click="selectNote($index)"
                            context-menu="showContextMenu($index)"
                            data-target="note-contextmenu">
                             <h5 class="list-group-item-heading">{% ng item.title %}</h5>
-                            <p class="list-group-item-text">{% ng item.regDate %}</p>
+                            <p class="list-group-item-text">{% ng item.regDate | date: 'yyyMMdd' %}</p>
                         </a>
                         <!--//loop -->
                     </div>
@@ -149,6 +151,9 @@
 
 {% block script %}
 <script src="{% static 'js/quicksiver/app.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksiver/controllers/controller.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksiver/controllers/notebookListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksiver/controllers/noteCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksiver/controllers/noteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksiver/controllers/recentNoteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
 <script src="{% static 'js/quicksiver/services/service.js?v=' %}{{ MY_SETTING.version }}"></script>
 {% endblock script %}

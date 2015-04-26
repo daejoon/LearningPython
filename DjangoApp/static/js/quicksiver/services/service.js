@@ -1,54 +1,84 @@
 (function (angular, $, _, console) {
     angular.module('quicksilver.service')
-        .factory('notebookListSvc', [function () {
-            var data = [
-                {title: 'Java', noteCnt:1, isModify:false},
-                {title: 'Python', noteCnt:10, isModify:false},
-                {title: 'AngularJs', noteCnt:20, isModify:false},
-                {title: 'Trash', noteCnt:5, isModify:false}
-            ];
+        .factory('quicksilverModelSvc', [
+            function() {
+
+            return {
+                createNoteBook: function(setting) {
+                    return _.extendOwn({
+                        id: 0,
+                        title: 'untitle',
+                        isDelete: false,
+                        isModify: false,
+                        regDate: '',
+                        modifyDate: '',
+                        deleteDate: '',
+                        noteCnt: 0
+                    }, setting||{});
+                },
+                createNote: function(setting) {
+                    return _.extendOwn({
+                        id: 0,
+                        title: 'untitle',
+                        content: '',
+                        isDelete: false,
+                        regDate: '',
+                        modifyDate: '',
+                        deleteDate: '',
+                        notebook_id: 0
+                    }, setting||{});
+                },
+                copyModel: function(setting) {
+                    return _.extendOwn({}, _.omit(setting||{}, '$$hashKey') );
+                }
+            };
+        }])
+        .factory('notebookListSvc', [
+            '$http',
+            function ($http) {
 
             return {
                 getNoteBookList: function() {
-                    return data;
+                    return $http.get("/quicksilver/notebook");
+                },
+                addNoteBook: function(notebook) {
+                    return $http.post("/quicksilver/notebook", {data:notebook});
+                },
+                deleteNoteBook: function(notebook) {
+                    return $http.delete("/quicksilver/notebook", notebook);
+                },
+                getTrashNoteList: function() {
+                    return $http.get("/quicksilver/trash");
                 }
             };
         }])
-        .factory('noteListSvc', [function () {
-            var data = [
-                {title: 'Python이란', regDate:'2015.01.08'},
-                {title: 'Django', regDate:'2015.01.08'},
-                {title: '클래스', regDate:'2015.01.08'},
-            ];
+        .factory('noteListSvc', [
+            '$http',
+            function ($http) {
 
             return {
-                getNoteList: function() {
-                    return data;
+                getNoteList: function(notebook_id) {
+                    return $http.get("/quicksilver/notelist/"+notebook_id);
                 }
             };
         }])
-        .factory('recentNoteListSvc', [function () {
-            var data = [
-                {title: 'Python이란', regDate:'2015.01.08'},
-                {title: 'Django', regDate:'2015.01.08'},
-                {title: '클래스', regDate:'2015.01.08'},
-            ];
+        .factory('recentNoteListSvc', [
+            '$http',
+            function ($http) {
 
             return {
                 getRecentNoteList: function() {
-                    return data;
+                    return $http.get("/quicksilver/recentnote");
                 }
             };
         }])
-        .factory('noteSvc', [function () {
-            var data = {
-                title: '파이썬의 이해?',
-                content: '파이썬은 쉽고 재미있습니다.<br/>마누라가 무서워요'
-            };
+        .factory('noteSvc', [
+            '$http',
+            function ($http) {
 
             return {
-                getNote: function() {
-                    return data;
+                getNote: function(note_id) {
+                    return $http.get("/quicksilver/note/" + note_id);
                 }
             };
         }]);

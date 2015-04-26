@@ -1,26 +1,26 @@
 (function (angular, $, _, console) {
     angular.module('quicksilver.controller')
         .controller('notebookListCtrl',[
-            '$scope', '$rootScope', '$element', '$q', 'notebookListSvc',
-            function($scope, $rootScope, $element, $q, notebookListSvc) {
+            '$scope', '$rootScope', '$element', '$q', 'notebookListSvc', 'quicksilverModelSvc',
+            function($scope, $rootScope, $element, $q, notebookListSvc, quicksilverModelSvc) {
 
                 $scope.notebookList = [];
                 $scope.notebookListIndex = -1;
 
                 $q.all([notebookListSvc.getNoteBookList(), notebookListSvc.getTrashNoteList()])
                     .then(function (resultArray) {
-                        $scope.notebookList.concat(resultArray[0].data.data);
-                        $scope.notebookList.push({
+                        _.each(resultArray[0].data.data, function (val, idx) {
+                            $scope.notebookList.push(quicksilverModelSvc.createNoteBook(val));
+                        });
+                        $scope.notebookList.push(quicksilverModelSvc.createNoteBook({
                             title: 'Trash',
                             noteCnt: resultArray[1].data.data.length,
                             isModify: false
-                        })
+                        }));
                     });
 
                 $scope.newNotebook = function () {
-                    $scope.notebookList.unshift({
-                        title: 'untitle', noteCnt:0, isModify:false
-                    })
+                    $scope.notebookList.unshift(quicksilverModelSvc.createNoteBook());
                 };
 
                 $scope.showContextMenu = function ($index) {
@@ -60,9 +60,19 @@
                     }
                 };
 
-                $scope.keyPress = function (e) {
-                    if ( e.which === 13 ) {
-                        $scope.notebookList[$scope.notebookListIndex].isModify = false;
+                $scope.keyPress = function ($event, $index) {
+                    if ( $event.which === 13 ) {
+                        $scope.notebookListIndex = $index;
+                        var currentNotebook = $scope.notebookList[$scope.notebookListIndex];
+
+                        notebookListSvc.addNoteBook(currentNotebook)
+                            .success(function (data, status) {
+                                $scope.notebookList[$scope.notebookListIndex] = quicksilverModelSvc.copyModel(data.data);
+                                $scope.notebookList[$scope.notebookListIndex].isModify = false;
+                            })
+                            .error(function (data, status) {
+                                console.error("오류 발생");
+                            });
                     }
                 };
 
