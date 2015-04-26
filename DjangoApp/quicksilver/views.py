@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class HomeView(TemplateView):
     template_name = 'quicksilver/home.html'
 
-    @setTplViewVariable("appName", "Home")
+    @setTplViewVariable("appName", "quicksilver")
     @setTplViewVariable("title", "QuickSilver")
     def get_context_data(self, **kwargs):
         logger.info("get_context_data")

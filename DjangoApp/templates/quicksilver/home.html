@@ -9,11 +9,11 @@
 <div class="container pull-left fill">
     <div class="row table-bordered fill-height">
         <!-- notebook controller -->
-        <div class="col-md-2 table-bordered fill-height" ng-controller="notebookCtrl">
+        <div class="col-md-2 table-bordered fill-height" ng-controller="notebookListCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
-                        <a href="#" ng-click="newNotebook()"><i class="fa fa-plus"></i> New NoteBook</a>
+                        <a href="" ng-click="newNotebook()"><i class="fa fa-plus"></i> New NoteBook</a>
                     </h5>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                     <form class="form-inline">
                     <div class="list-group">
                         <!-- loop -->
-                        <a href="#" class="list-group-item"
+                        <a href="" class="list-group-item"
                                     ng-repeat="item in notebookList"
                                     ng-click="selectNotebook($index)"
                                     context-menu="showContextMenu($index)"
@@ -62,10 +62,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 padding-left-right-5px">
+                <div class="col-md-12 padding-left-right-5px" ng-controller="recentNoteListCtrl">
                     <div class="list-group">
                         <!-- loop -->
-                        <a href="#" class="list-group-item" ng-repeat="item in recentNoteList">
+                        <a href="" class="list-group-item" ng-repeat="item in recentNoteList">
                             <i class="fa fa-file-text-o"></i>
                             <span>{% ng item.title %}</span>
                         </a>
@@ -76,18 +76,18 @@
         </div>
         <!--// notebook controller -->
         <!-- note controller -->
-        <div class="col-md-2 table-bordered fill-height" ng-controller="noteCtrl">
+        <div class="col-md-2 table-bordered fill-height" ng-controller="noteListCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
-                        <a href="#" ng-click="newNote($event)"><i class="fa fa-plus"></i> New Note</a>
+                        <a href="" ng-click="newNote($event)"><i class="fa fa-plus"></i> New Note</a>
                     </h5>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
-                        Note
+                        Notes
                     </h5>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <div class="col-md-12 padding-left-right-5px">
                     <div class="list-group" >
                         <!-- loop -->
-                        <a href="#"
+                        <a href=""
                            class="list-group-item"
                            ng-repeat="item in noteList"
                            context-menu="showContextMenu($index)"
@@ -110,14 +110,13 @@
         </div>
         <!--// note controller -->
         <!-- content controller -->
-        <div class="col-md-8 table-bordered fill-height" ng-controller="contentCtrl">
+        <div class="col-md-8 table-bordered fill-height" ng-controller="noteCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
                     <h5>
-                        <a href="#"><i class="fa fa-caret-square-o-left fa-lg"></i></a>
-                        <a href="#"><i class="fa fa-caret-square-o-right fa-lg"></i></a>
+                        <a href=""><i class="fa fa-caret-square-o-left fa-lg"></i></a>
+                        <a href=""><i class="fa fa-caret-square-o-right fa-lg"></i></a>
                     </h5>
-                    <a href="#content">페이지 보기</a>
                 </div>
             </div>
             <div class="row">
@@ -132,24 +131,24 @@
 
 <div id="notebook-contextmenu" class="dropdown position-fixed" ng-controller="notebookContextMenuCtrl">
     <ul class="dropdown-menu" role="menu">
-        <li><a tabindex="1" href="#" ng-click="renameNotebook($event)">Rename Notebook</a></li>
+        <li><a tabindex="1" href="" ng-click="renameNotebook($event)">Rename Notebook</a></li>
         <li role="presentation" class="divider"></li>
-        <li><a tabindex="2" href="#" ng-click="deleteNotebook($event)">Delete Notebook</a></li>
-        <li><a tabindex="3" href="#" ng-click="emptyTrash($event)">Empty Trash</a></li>
+        <li><a tabindex="2" href="" ng-click="deleteNotebook($event)">Delete Notebook</a></li>
+        <li><a tabindex="3" href="" ng-click="emptyTrash($event)">Empty Trash</a></li>
     </ul>
 </div>
 
 <div id="note-contextmenu" class="dropdown position-fixed" ng-controller="noteContextMenuCtrl">
     <ul class="dropdown-menu" role="menu">
-        <li><a tabindex="1" href="#" ng-click="duplicateNote($event)">Duplicate Note</a></li>
+        <li><a tabindex="1" href="" ng-click="duplicateNote($event)">Duplicate Note</a></li>
         <li role="presentation" class="divider"></li>
-        <li><a tabindex="2" href="#" ng-click="deleteNote($event)">Delete Note</a></li>
+        <li><a tabindex="2" href="" ng-click="deleteNote($event)">Delete Note</a></li>
     </ul>
 </div>
-
-
 {% endblock content %}
 
 {% block script %}
 <script src="{% static 'js/quicksiver/app.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksiver/controllers/controller.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksiver/services/service.js?v=' %}{{ MY_SETTING.version }}"></script>
 {% endblock script %}
