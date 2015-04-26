@@ -1,11 +1,21 @@
 (function (angular, $, _, console) {
     angular.module('quicksilver.controller')
         .controller('notebookListCtrl',[
-            '$scope', '$element', 'notebookListSvc',
-            function($scope, $element, notebookListSvc) {
+            '$scope', '$rootScope', '$element', '$q', 'notebookListSvc',
+            function($scope, $rootScope, $element, $q, notebookListSvc) {
 
-                $scope.notebookList = notebookListSvc.getNoteBookList();
+                $scope.notebookList = [];
                 $scope.notebookListIndex = -1;
+
+                $q.all([notebookListSvc.getNoteBookList(), notebookListSvc.getTrashNoteList()])
+                    .then(function (resultArray) {
+                        $scope.notebookList.concat(resultArray[0].data.data);
+                        $scope.notebookList.push({
+                            title: 'Trash',
+                            noteCnt: resultArray[1].data.data.length,
+                            isModify: false
+                        })
+                    });
 
                 $scope.newNotebook = function () {
                     $scope.notebookList.unshift({
@@ -41,6 +51,13 @@
 
                 $scope.selectNotebook = function ($index) {
                     console.log($index);
+                    $scope.notebookListIndex = $index;
+
+                    // Trash 아니라면 ...
+                    if ( $scope.notebookList.length-1 !== $scope.notebookListIndex ) {
+                        var currnetNotebook = $scope.notebookList[$index];
+                        $rootScope.$broadcast("notebookCtrl:selectNotebook", currnetNotebook);
+                    }
                 };
 
                 $scope.keyPress = function (e) {
@@ -51,7 +68,11 @@
 
                 $scope.doModify = function ($index) {
                     $scope.notebookListIndex = $index;
-                    $scope.notebookList[$index].isModify = true;
+                    if ( $scope.notebookList.length-1 === $scope.notebookListIndex ) {
+                        $scope.notebookList[$index].isModify = false;
+                    } else {
+                        $scope.notebookList[$index].isModify = true;
+                    }
                 };
 
                 $scope.$on("notebookCtrl:renameNotebook", function (e) {
@@ -65,13 +86,6 @@
                 $scope.$on("notebookCtrl:emptyTrash", function (e) {
                     $scope.notebookList[$scope.notebookList.length-1].noteCnt = 0;
                 });
-        }])
-        .controller('recentNoteListCtrl', [
-            '$scope', '$element', 'recentNoteListSvc',
-            function($scope, $element, recentNoteListSvc) {
-
-                $scope.recentNoteList = recentNoteListSvc.getRecentNoteList();
-
         }])
         .controller('notebookContextMenuCtrl', [
             '$scope', '$rootScope', '$element',
@@ -90,65 +104,7 @@
                     $rootScope.$broadcast("notebookCtrl:emptyTrash");
                     $element.removeClass("open");
                 };
-        }])
-        .controller('noteListCtrl', [
-            '$scope', 'noteListSvc',
-            function($scope, noteListSvc) {
-                $scope.noteList = noteListSvc.getNoteList();
-                $scope.noteListIndex = -1;
-
-                $scope.showContextMenu = function ($index) {
-                    console.log($index);
-                    $scope.noteListIndex = $index;
-                };
-
-                $scope.newNote = function ($event) {
-                    $scope.noteList.unshift({
-                        title: 'untitle',
-                        regDate: Date.now()
-                    });
-                };
-
-                $scope.$on("noteListCtrl:duplicateNote", function (e) {
-                    var copyItem = $scope.noteList[$scope.noteListIndex];
-                    $scope.noteList.unshift({
-                        title: copyItem.title,
-                        regDate: copyItem.regDate
-                    });
-
-                });
-
-                $scope.$on("noteListCtrl:deleteNote", function (e) {
-                    $scope.noteList.splice($scope.noteListIndex,1);
-                });
-        }])
-        .controller('noteContextMenuCtrl', [
-            '$scope', '$rootScope', '$element',
-            function($scope, $rootScope, $element) {
-                $scope.duplicateNote = function ($event) {
-                    $rootScope.$broadcast("noteListCtrl:duplicateNote");
-                    $element.removeClass("open");
-                };
-
-                $scope.deleteNote = function ($event) {
-                    $rootScope.$broadcast("noteListCtrl:deleteNote");
-                    $element.removeClass("open");
-                };
-        }])
-        .controller('noteCtrl', [
-            '$scope', 'noteSvc',
-            function ($scope, noteSvc) {
-                $scope.options = {
-                    lang: 'ko-KR',
-                    height: 550,
-                    minHeight: null,             // set minimum height of editor
-                    maxHeight: null,             // set maximum height of editor
-                    focus: true,
-                    tabsize: 4
-                };
-
-                $scope.note = noteSvc.getNote();
-        }]);
+            }]);
 })(angular, jQuery, _, window.console&&window.console||{
     log: function() {},
     debug: function() {},
