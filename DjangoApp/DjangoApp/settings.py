@@ -152,5 +152,5 @@ LOGGING = {
 
 # 개인 설정
 MY_SETTING = {
-    'version': '20150422'
+    'version': '20150427'
 }

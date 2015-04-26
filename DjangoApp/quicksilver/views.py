@@ -17,3 +17,8 @@ class HomeView(TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
         return context
 
+
+class AngularTplView(TemplateView):
+    def get_context_data(self, **kwargs):
+        self.template_name = "quicksilver/tpl/" + kwargs['page_name'] + ".html"
+        return super(AngularTplView, self).get_context_data(**kwargs)
