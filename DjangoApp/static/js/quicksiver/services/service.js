@@ -4,17 +4,18 @@
         .factory('quicksilverModelSvc', [
             function() {
 
-            var _copyModel = function(setting) {
-                return _.extendOwn({}, _.omit(setting||{}, '$$hashKey') );
+            var _removeHashkey = function(setting) {
+                return _.omit(setting||{}, '$$hashKey');
             };
 
             return {
                 createNoteBook: function(setting) {
                     return _.extendOwn({
                         id: 0,
-                        title: 'untitle',
+                        title: 'Untitled Notebook',
                         isDelete: false,
                         isModify: false,
+                        isFocus: false,
                         regDate: '',
                         modifyDate: '',
                         deleteDate: '',
@@ -24,22 +25,28 @@
                 createNote: function(setting) {
                     return _.extendOwn({
                         id: 0,
-                        title: 'untitle',
+                        title: 'Untitled Note',
                         content: '',
                         isDelete: false,
+                        isFocus: false,
                         regDate: '',
                         modifyDate: '',
                         deleteDate: '',
                         notebook_id: 0
                     }, setting||{});
                 },
-                copyNoteBook: function(setting) {
-                    return _copyModel(setting);
+                copyNoteBook: function(setting, bDeleteHashKey) {
+                    if ( bDeleteHashKey || true ) {
+                        setting = _removeHashkey(setting)
+                    }
+                    return this.createNoteBook(setting);
                 },
-                copyNote: function(setting) {
-                    return _copyModel(setting);
+                copyNote: function(setting, bDeleteHashKey) {
+                    if ( bDeleteHashKey || true ) {
+                        setting = _removeHashkey(setting)
+                    }
+                    return this.createNote(setting);
                 }
-
             };
         }])
         .factory('notebookListSvc', [
@@ -51,13 +58,16 @@
                     return $http.get("/quicksilver/notebook");
                 },
                 addNoteBook: function(notebook) {
-                    return $http.put("/quicksilver/notebook", {data:quicksilverModelSvc.copyNote(notebook)});
+                    return $http.put("/quicksilver/notebook", {data:notebook});
                 },
                 deleteNoteBook: function(notebook) {
-                    return $http.delete("/quicksilver/notebook", notebook);
+                    return $http.delete("/quicksilver/notebook/"+notebook.id);
                 },
                 getTrashNoteList: function() {
                     return $http.get("/quicksilver/trash");
+                },
+                deleteTrashNoteList: function() {
+                    return $http.delete("/quicksilver/trash");
                 }
             };
         }])
@@ -86,8 +96,14 @@
             function ($http) {
 
             return {
-                getNote: function(note_id) {
-                    return $http.get("/quicksilver/note/" + note_id);
+                getNote: function(noteObj) {
+                    return $http.get("/quicksilver/note/" + noteObj.id);
+                },
+                addNote: function(noteObj) {
+                    return $http.put("/quicksilver/note", {data:noteObj});
+                },
+                deleteNote: function(noteObj) {
+                    return $http.delete("/quicksilver/note/"+noteObj.id);
                 }
             };
         }]);
