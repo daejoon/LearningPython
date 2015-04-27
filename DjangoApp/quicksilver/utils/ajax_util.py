@@ -17,8 +17,7 @@ class AjaxResponse(JsonResponse):
             else:
                 newData['data'] = data
 
-
-            if hasattr(kwargs, 'message'):
+            if 'message' in kwargs:
                 newData['message'] = kwargs['message']
             else:
                 newData['message'] = ''
