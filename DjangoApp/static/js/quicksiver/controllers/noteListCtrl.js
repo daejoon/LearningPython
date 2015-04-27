@@ -1,52 +1,110 @@
 ;
 (function (angular, $, _, console) {
-    angular.module('quicksilver.controller')
-        .controller('noteListCtrl', [
-            '$scope', '$rootScope', '$q', 'noteListSvc', 'quicksilverModelSvc',
-            function($scope, $rootScope, $q, noteListSvc, quicksilverModelSvc) {
+    var modduleName = "quicksilver.controller";
+    var controllerName = "noteListCtrl";
+
+    angular.module(modduleName)
+        .controller(controllerName, [
+            '$scope', '$rootScope', '$q', 'noteListSvc', 'noteSvc', 'quicksilverModelSvc',
+            function($scope, $rootScope, $q, noteListSvc, noteSvc, quicksilverModelSvc) {
                 $scope.noteList = [];
                 $scope.noteListIndex = -1;
+                $scope.currentNotebook = quicksilverModelSvc.createNoteBook();
 
+                /**
+                 * context-menu를 보여준다.
+                 * @param $index
+                 */
                 $scope.showContextMenu = function ($index) {
                     console.log($index);
                     $scope.noteListIndex = $index;
                 };
 
-                $scope.newNote = function ($event) {
-                    $scope.noteList.unshift(quicksilverModelSvc.createNote());
+                /**
+                 * 새로운 노트를 추가한다.
+                 * @param $event
+                 */
+                $scope.addNote = function (newNote) {
+                    if ( $scope.currentNotebook.id > 0 ) {
+                        newNote = newNote || quicksilverModelSvc.createNote();
+                        newNote.notebook_id = $scope.currentNotebook.id;
+                        newNote.id = 0;
+                        noteSvc.addNote(newNote)
+                            .success(function (data, status, headers, config) {
+                                $scope.noteList.unshift(quicksilverModelSvc.copyNote(data.data));
+                                $scope.selectNote(0);
+                                $scope.currentNotebook.noteCnt++;
+                            });
+                    }
                 };
 
+                /**
+                 * 리스트에서 노트를 선택한다.
+                 * @param $index
+                 */
                 $scope.selectNote = function($index) {
                     $scope.noteListIndex = $index;
                     $rootScope.$broadcast("noteCtrl:selectNote", $scope.noteList[$index]);
+
+                    _.each($scope.noteList, function (val, idx) {
+                        val.isFocus = (idx === $index)?true:false;
+                    });
                 };
 
-                $scope.$on("noteListCtrl:duplicateNote", function (e) {
+                /**
+                 * 노트를 복사할때 이벤트
+                 */
+                $scope.$on(controllerName + ":duplicateNote", function (e) {
                     var copyItem = $scope.noteList[$scope.noteListIndex];
-                    $scope.noteList.unshift(quicksilverModelSvc.copyNote(copyItem));
+                    $scope.addNote(copyItem);
                 });
 
-                $scope.$on("noteListCtrl:deleteNote", function (e) {
+                /**
+                 * 노트를 삭제할때 이벤트
+                 */
+                $scope.$on(controllerName + ":deleteNote", function (e) {
                     $scope.noteList.splice($scope.noteListIndex,1);
                 });
 
-                $scope.$on("notebookCtrl:selectNotebook", function (e, notebookObj) {
+                /**
+                 * 노트북이 선택되었을때 이벤트
+                 */
+                $scope.$on(controllerName + ":selectNotebook", function (e, notebookObj) {
+                    $scope.currentNotebook = notebookObj;
+
                     noteListSvc.getNoteList(notebookObj.id && notebookObj.id || 0)
                         .success(function (data, status, headers, config) {
-                            $scope.noteList = data.data;
+                            $scope.noteList = [];
+                            _.each(data.data, function (val) {
+                                $scope.noteList.push(quicksilverModelSvc.createNote(val));
+                            });
                         });
+                });
+
+                /**
+                 * 현재 노트북을 감시한다.
+                 */
+                $scope.$watch('currentNotebook', function (newValue, oldValue) {
+                    console.log("watch currentNotebook");
+                }, true);
+
+                /**
+                 * 노트리스트를 감시한다.
+                 */
+                $scope.$watchCollection('noteList', function (newValue, oldValue) {
+                    $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
                 });
         }])
         .controller('noteContextMenuCtrl', [
             '$scope', '$rootScope', '$element',
             function($scope, $rootScope, $element) {
                 $scope.duplicateNote = function ($event) {
-                    $rootScope.$broadcast("noteListCtrl:duplicateNote");
+                    $rootScope.$broadcast(controllerName + ":duplicateNote");
                     $element.removeClass("open");
                 };
 
                 $scope.deleteNote = function ($event) {
-                    $rootScope.$broadcast("noteListCtrl:deleteNote");
+                    $rootScope.$broadcast(controllerName + ":deleteNote");
                     $element.removeClass("open");
                 };
         }]);
