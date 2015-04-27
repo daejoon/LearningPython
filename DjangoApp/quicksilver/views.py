@@ -31,7 +31,7 @@ class AngularTplView(TemplateView):
         self.template_name = "quicksilver/tpl/" + kwargs['page_name'] + ".html"
         return super(AngularTplView, self).get_context_data(**kwargs)
 
-class NotebookView(View):
+class NotebookListView(View):
 
     def post(self, request, *args, **kwargs):
         pass
