@@ -1,7 +1,12 @@
+;
 (function (angular, $, _, console) {
     angular.module('quicksilver.service')
         .factory('quicksilverModelSvc', [
             function() {
+
+            var _copyModel = function(setting) {
+                return _.extendOwn({}, _.omit(setting||{}, '$$hashKey') );
+            };
 
             return {
                 createNoteBook: function(setting) {
@@ -28,21 +33,25 @@
                         notebook_id: 0
                     }, setting||{});
                 },
-                copyModel: function(setting) {
-                    return _.extendOwn({}, _.omit(setting||{}, '$$hashKey') );
+                copyNoteBook: function(setting) {
+                    return _copyModel(setting);
+                },
+                copyNote: function(setting) {
+                    return _copyModel(setting);
                 }
+
             };
         }])
         .factory('notebookListSvc', [
-            '$http',
-            function ($http) {
+            '$http', 'quicksilverModelSvc',
+            function ($http, quicksilverModelSvc) {
 
             return {
                 getNoteBookList: function() {
                     return $http.get("/quicksilver/notebook");
                 },
                 addNoteBook: function(notebook) {
-                    return $http.post("/quicksilver/notebook", {data:notebook});
+                    return $http.put("/quicksilver/notebook", {data:quicksilverModelSvc.copyNote(notebook)});
                 },
                 deleteNoteBook: function(notebook) {
                     return $http.delete("/quicksilver/notebook", notebook);

@@ -1,3 +1,4 @@
+;
 (function (angular, $, _, console) {
     angular.module('quicksilver', ['ngRoute', 'quicksilver.controller', 'quicksilver.service']);
     angular.module('quicksilver.controller' , ['summernote', 'ng-context-menu', 'quicksilver.service']);

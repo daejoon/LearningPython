@@ -1,3 +1,4 @@
+;
 (function (angular, $, _, console) {
     angular.module('quicksilver.controller')
         .controller('noteCtrl', [
