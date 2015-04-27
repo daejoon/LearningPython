@@ -32,21 +32,22 @@
                         <!-- loop -->
                         <a href="" class="list-group-item"
                                     ng-repeat="item in notebookList"
+                                    ng-class="{'active': item.isFocus}"
                                     ng-click="selectNotebook($index)"
                                     context-menu="showContextMenu($index)"
                                     context-menu-close="hideContextMenu($index)"
                                     context-menu-disabled="false"
-                                    data-target="notebook-contextmenu"
-                                    ng-switch="item.isModify">
+                                    data-target="notebook-contextmenu">
                             <i class="fa" ng-class="{'fa-trash-o': {% ng $last === true %}, 'fa-book': {% ng $last === false %}}"></i>
-                            <span ng-switch-when="false" ng-dblclick="doModify($index)">
-                                {% ng item.title %}
-                            </span>
-                            <span ng-switch-when="true">
+                            <span ng-show="item.isModify">
                                 <input type="text" class="form-control input-mini input-sm"
                                        ng-model="item.title"
                                        ng-keypress="keyPress($event, $index)"
-                                       id="notebook-title-{% ng $index %}">
+                                       ng-blur="titleBulr($event, $index)"
+                                       ng-attr-id="{% ng 'notebook-title-' + $index %}">
+                            </span>
+                            <span ng-hide="item.isModify" ng-dblclick="dblClickTtile($index)">
+                                {% ng item.title %}
                             </span>
                             <span class="badge">{% ng item.noteCnt %}</span>
                         </a>
@@ -79,17 +80,9 @@
         <!-- note controller -->
         <div class="col-md-2 table-bordered fill-height" ng-controller="noteListCtrl">
             <div class="row">
-                <div class="col-md-12 padding-left-right-5px">
-                    <h5>
-                        <a href="" ng-click="newNote($event)"><i class="fa fa-plus"></i> New Note</a>
-                    </h5>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 padding-left-right-5px">
-                    <h5>
-                        Notes
-                    </h5>
+                <div class="col-md-12 padding-left-right-5px" ng-switch="currentNotebook.id">
+                    <h5 ng-switch-when="0">{% ng currentNotebook.title %}</h5>
+                    <h5 ng-switch-default><a href="" ng-click="addNote()"><i class="fa fa-plus"></i> {% ng currentNotebook.title %}</a></h5>
                 </div>
             </div>
             <div class="row">
@@ -100,10 +93,11 @@
                            class="list-group-item"
                            ng-repeat="item in noteList"
                            ng-click="selectNote($index)"
+                           ng-class="{'active': item.isFocus}"
                            context-menu="showContextMenu($index)"
                            data-target="note-contextmenu">
                             <h5 class="list-group-item-heading">{% ng item.title %}</h5>
-                            <p class="list-group-item-text">{% ng item.regDate | date: 'yyyMMdd' %}</p>
+                            <p class="list-group-item-text">{% ng item.regDate | limitTo:10 %}</p>
                         </a>
                         <!--//loop -->
                     </div>
@@ -131,7 +125,7 @@
     </div>
 </div>
 
-<div id="notebook-contextmenu" class="dropdown position-fixed" ng-controller="notebookContextMenuCtrl">
+<div id="notebook-contextmenu" class="dropdown position-fixed top-menu" ng-controller="notebookContextMenuCtrl">
     <ul class="dropdown-menu" role="menu">
         <li><a tabindex="1" href="" ng-click="renameNotebook($event)">Rename Notebook</a></li>
         <li role="presentation" class="divider"></li>
@@ -140,7 +134,7 @@
     </ul>
 </div>
 
-<div id="note-contextmenu" class="dropdown position-fixed" ng-controller="noteContextMenuCtrl">
+<div id="note-contextmenu" class="dropdown position-fixed top-menu" ng-controller="noteContextMenuCtrl">
     <ul class="dropdown-menu" role="menu">
         <li><a tabindex="1" href="" ng-click="duplicateNote($event)">Duplicate Note</a></li>
         <li role="presentation" class="divider"></li>
