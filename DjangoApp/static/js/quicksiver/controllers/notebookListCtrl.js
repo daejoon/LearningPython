@@ -67,7 +67,7 @@
 
                         notebookListSvc.addNoteBook(currentNotebook)
                             .success(function (data, status) {
-                                $scope.notebookList[$scope.notebookListIndex] = quicksilverModelSvc.copyModel(data.data);
+                                $scope.notebookList[$scope.notebookListIndex] = quicksilverModelSvc.copyNoteBook(data.data);
                                 $scope.notebookList[$scope.notebookListIndex].isModify = false;
                             })
                             .error(function (data, status) {

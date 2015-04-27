@@ -22,7 +22,7 @@
 
                 $scope.$on("noteListCtrl:duplicateNote", function (e) {
                     var copyItem = $scope.noteList[$scope.noteListIndex];
-                    $scope.noteList.unshift(quicksilverModelSvc.copyModel(copyItem));
+                    $scope.noteList.unshift(quicksilverModelSvc.copyNote(copyItem));
                 });
 
                 $scope.$on("noteListCtrl:deleteNote", function (e) {
