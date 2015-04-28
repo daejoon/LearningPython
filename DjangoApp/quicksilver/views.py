@@ -8,13 +8,14 @@ from django.views.generic.base import TemplateView, View
 from django.forms.models import model_to_dict
 
 from django.utils import timezone
+from django.utils.log import getLogger
 
 from quicksilver.decorations.set_variable import setTplViewVariable
 from quicksilver.utils.ajax_util import AjaxResponse, AjaxRequest
 from quicksilver.models import NoteBook, Note
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -23,7 +24,7 @@ class HomeView(TemplateView):
     @setTplViewVariable("appName", "quicksilver")
     @setTplViewVariable("title", "QuickSilver")
     def get_context_data(self, **kwargs):
-        logger.info("get_context_data")
+        logger.debug("home - get_context_data")
         context = super(HomeView, self).get_context_data(**kwargs)
         return context
 

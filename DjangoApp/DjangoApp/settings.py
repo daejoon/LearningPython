@@ -89,7 +89,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
 TIME_ZONE = 'Asia/Seoul'
 
@@ -126,6 +126,7 @@ LOGGING = {
             'class': 'logging.NullHandler',
         },
         'console': {
+            'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
@@ -136,20 +137,20 @@ LOGGING = {
             'formatter': 'verbose'
         },
     },
-    'logger': {
+    'loggers': {
         '': {
-            'handlers': ['console'],
             'level': 'DEBUG',
+            'handlers': ['null','console'],
             'propagate': False,
         },
-        'django': {
+        'django.db.backends': {
+            'level': 'DEBUG',
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'propagate': False,
         },
         'quicksilver': {
+            'level': 'DEBUG',
             'handlers': ['console', 'file'],
-            'level': 'INFO',
             'propagate': False,
         },
     }
