@@ -32,7 +32,7 @@
                         regDate: '',
                         modifyDate: '',
                         deleteDate: '',
-                        notebook_id: 0
+                        notebook: 0 // NoteBook의 id
                     }, setting||{});
                 },
                 copyNoteBook: function(setting, bDeleteHashKey) {

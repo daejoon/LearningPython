@@ -27,7 +27,7 @@
                 $scope.addNote = function (newNote) {
                     if ( $scope.currentNotebook.id > 0 ) {
                         newNote = newNote || quicksilverModelSvc.createNote();
-                        newNote.notebook_id = $scope.currentNotebook.id;
+                        newNote.notebook = $scope.currentNotebook.id;
                         newNote.id = 0;
                         noteSvc.addNote(newNote)
                             .success(function (data, status, headers, config) {
@@ -78,7 +78,29 @@
                             _.each(data.data, function (val) {
                                 $scope.noteList.push(quicksilverModelSvc.createNote(val));
                             });
+
+                            if ( $scope.noteList.length > 0) {
+                                $scope.selectNote(0);
+                            }
                         });
+                });
+
+                /**
+                 * 이전 노트로 이동
+                 */
+                $scope.$on(controllerName + ":prevNote", function () {
+                    if ( $scope.noteListIndex > 0 ) {
+                        $scope.selectNote($scope.noteListIndex - 1);
+                    }
+                });
+
+                /**
+                 * 이후 노트로 이동
+                 */
+                $scope.$on(controllerName + ":nextNote", function () {
+                    if ( $scope.noteListIndex < $scope.noteList.length-1 ) {
+                        $scope.selectNote($scope.noteListIndex + 1);
+                    }
                 });
 
                 /**

@@ -4,7 +4,9 @@ import logging
 import re
 
 from django.views.generic.base import TemplateView, View
+
 from django.forms.models import model_to_dict
+
 from django.utils import timezone
 
 from quicksilver.decorations.set_variable import setTplViewVariable
@@ -51,8 +53,9 @@ class NotebookListView(View):
         try:
             model = NoteBook.objects.get(pk=kwargs['notebook_id'])
             model.isDelete = True
+            model.deleteDate = timezone.now()
             model.save()
-            Note.objects.filter(notebook__pk=kwargs['notebook_id']).update(isDelete = True, deleteDate=timezone.now())
+            Note.objects.filter(notebook__pk=kwargs['notebook_id']).update(isDelete=True, deleteDate=timezone.now())
         except:
            pass
 
@@ -68,10 +71,10 @@ class NotebookListView(View):
                 model = NoteBook()
             else:
                 model = NoteBook.objects.get(pk=data['id'])
-                model.modifyDate = timezone.now()
         except:
             model = NoteBook()
 
+        model.modifyDate = timezone.now()
         for name in  NoteBook._meta.get_all_field_names():
             if name in data:
                 if not (bool(re.search('date', name, flags=re.IGNORECASE)) or bool(re.search('id', name, flags=re.IGNORECASE))):
@@ -98,7 +101,7 @@ class TrashView(View):
 
 class RecentNoteView(View):
     def get(self, request, *args, **kwargs):
-        qs = Note.objects.filter(isDelete = False).order_by('-regDate')[:3]
+        qs = Note.objects.filter(isDelete = False).order_by('-modifyDate', '-regDate')[:5]
         return AjaxResponse(qs)
 
 class NoteListView(View):
@@ -128,20 +131,25 @@ class NoteView(View):
         ajaxRequest = AjaxRequest(request)
         data = ajaxRequest.getData()
 
-        try:
-            # 신규
-            if int(data['id']) == 0:
+        if bool(data):
+            try:
+                # 신규
+                if int(data['id']) == 0:
+                    model = Note()
+                else:
+                    model = Note.objects.get(pk=data['id'])
+                    model.modifyDate = timezone.now()
+            except:
                 model = Note()
-            else:
-                model = Note.objects.get(pk=data['id'])
-                model.modifyDate = timezone.now()
-        except:
-            model = Note()
 
-        for name in  Note._meta.get_all_field_names():
-            if name in data:
-                if not (bool(re.search('date', name, flags=re.IGNORECASE)) or bool(re.search('^id$', name, flags=re.IGNORECASE))):
-                    model.__dict__[name] = data[name]
+            for name in  Note._meta.get_all_field_names():
+                if name in data:
+                    if not (bool(re.search('date', name, flags=re.IGNORECASE)) or bool(re.search('^id$', name, flags=re.IGNORECASE))):
+                        model.__dict__[name] = data[name]
 
-        model.save()
-        return AjaxResponse(model)
+            notebook = NoteBook.objects.get(pk=data['notebook'])
+            model.notebook = notebook
+            model.save()
+            return AjaxResponse(model)
+        else:
+            return AjaxResponse()

@@ -1,5 +1,7 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
+
 from quicksilver.views import HomeView, AngularTplView, NotebookListView, TrashView, RecentNoteView, NoteListView, NoteView
+
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name="home"),
