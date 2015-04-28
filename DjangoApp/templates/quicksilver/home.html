@@ -47,7 +47,7 @@
                                        ng-attr-id="{% ng 'notebook-title-' + $index %}">
                             </span>
                             <span ng-hide="item.isModify" ng-dblclick="dblClickTtile($index)">
-                                {% ng item.title %}
+                                {% ng item.title | shortcut:13 %}
                             </span>
                             <span class="badge">{% ng item.noteCnt %}</span>
                         </a>

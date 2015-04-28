@@ -145,7 +145,7 @@ LOGGING = {
         },
         'django.db.backends': {
             'level': 'DEBUG',
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
         },
         'quicksilver': {

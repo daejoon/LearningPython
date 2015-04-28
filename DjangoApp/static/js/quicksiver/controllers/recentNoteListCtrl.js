@@ -14,6 +14,7 @@
                     recentNoteListSvc
                         .getRecentNoteList()
                         .success(function (data, status, headers, config) {
+                            console.log(data);
                             $scope.recentNoteListIndex = -1;
                             $scope.recentNoteList = [];
                             _.each(data.data, function (val, idx) {

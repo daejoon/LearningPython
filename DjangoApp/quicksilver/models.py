@@ -6,7 +6,7 @@ class NoteBook(models.Model):
     title = models.CharField(max_length=255)
     isDelete = models.BooleanField(default=False)
     regDate = models.DateTimeField(default=timezone.now)
-    modifyDate = models.DateTimeField(null=True)
+    modifyDate = models.DateTimeField(default=timezone.now, null=True)
     deleteDate = models.DateTimeField(null=True)
 
     def __unicode__(self):
@@ -17,7 +17,7 @@ class Note(models.Model):
     content = models.TextField(null=True)
     isDelete = models.BooleanField(default=False)
     regDate = models.DateTimeField(default=timezone.now)
-    modifyDate = models.DateTimeField(null=True)
+    modifyDate = models.DateTimeField(default=timezone.now, null=True)
     deleteDate = models.DateTimeField(null=True)
     notebook = models.ForeignKey(NoteBook)
 

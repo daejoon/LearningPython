@@ -143,10 +143,10 @@ class NoteView(View):
                     model = Note()
                 else:
                     model = Note.objects.get(pk=data['id'])
-                    model.modifyDate = timezone.now()
             except:
                 model = Note()
 
+            model.modifyDate = timezone.now()
             for name in  Note._meta.get_all_field_names():
                 if name in data:
                     if not (bool(re.search('date', name, flags=re.IGNORECASE)) or bool(re.search('^id$', name, flags=re.IGNORECASE))):

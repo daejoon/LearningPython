@@ -5,8 +5,8 @@
 
     angular.module(modduleName)
         .controller(controllerName, [
-            '$scope', '$rootScope', '$q', 'noteListSvc', 'noteSvc', 'quicksilverModelSvc',
-            function($scope, $rootScope, $q, noteListSvc, noteSvc, quicksilverModelSvc) {
+            '$scope', '$rootScope', '$timeout', '$q', 'noteListSvc', 'noteSvc', 'quicksilverModelSvc',
+            function($scope, $rootScope, $timeout, $q, noteListSvc, noteSvc, quicksilverModelSvc) {
                 $scope.noteList = [];
                 $scope.noteListIndex = -1;
                 $scope.currentNotebook = quicksilverModelSvc.createNoteBook();
@@ -34,6 +34,7 @@
                                 $scope.noteList.unshift(quicksilverModelSvc.copyNote(data.data));
                                 $scope.selectNote(0);
                                 $scope.currentNotebook.noteCnt++;
+
                                 $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
                             });
                     }
