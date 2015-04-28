@@ -3,17 +3,17 @@
 
 
 ### Server-Side Stack
-- Python
-- Django
+- [Python](https://www.python.org/)
+- [Django](https://www.djangoproject.com/)
 
 ### Client-Side Stack
-- jquery
-- underscorejs
-- summernote
-- bootstrap
-- font-awesome
-- angularJS
-- angular-summernote
-- angular-ui-bootstrap
-- ng-context-menu
+- [jquery](http://jquery.com)
+- [underscorejs](http://underscorejs.org/)
+- [summernote](http://summernote.org/)
+- [bootstrap](http://getbootstrap.com/)
+- [font-awesome](http://fortawesome.github.io/Font-Awesome/)
+- [angularJS](https://www.angularjs.org/)
+- [angular-summernote](https://github.com/summernote/angular-summernote)
+- [angular-ui-bootstrap](https://github.com/angular-ui/bootstrap)
+- [ng-context-menu](https://github.com/ianwalter/ng-context-menu)
 
