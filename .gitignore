@@ -2,3 +2,5 @@
 *.iml
 .idea/
 logs/
+
+db.sqlite3
