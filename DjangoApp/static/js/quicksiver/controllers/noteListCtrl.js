@@ -34,7 +34,6 @@
                                 $scope.noteList.unshift(quicksilverModelSvc.copyNote(data.data));
                                 $scope.selectNote(0);
                                 $scope.currentNotebook.noteCnt++;
-
                                 $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
                             });
                     }
