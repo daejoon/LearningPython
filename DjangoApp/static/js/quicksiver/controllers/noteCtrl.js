@@ -40,7 +40,8 @@
                     $rootScope.$broadcast("noteListCtrl:nextNote");
                 };
 
-                $scope.$on("noteCtrl:selectNote", function (e, noteObj) {
+                $scope.$on(controllerName + ":selectNote", function (e, noteObj) {
+                    console.log("noteCtrl:selectNote");
                     $scope.note = noteObj;
                 });
 

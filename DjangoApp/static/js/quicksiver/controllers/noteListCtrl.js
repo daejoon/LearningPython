@@ -47,7 +47,6 @@
                 $scope.selectNote = function($index) {
                     $scope.noteListIndex = $index;
                     $rootScope.$broadcast("noteCtrl:selectNote", $scope.noteList[$index]);
-
                     _.each($scope.noteList, function (val, idx) {
                         val.isFocus = (idx === $index)?true:false;
                     });
@@ -80,18 +79,27 @@
                 /**
                  * 노트북이 선택되었을때 이벤트
                  */
-                $scope.$on(controllerName + ":selectNotebook", function (e, notebookObj) {
+                $scope.$on(controllerName + ":selectNotebook", function (e, notebookObj, note) {
                     $scope.currentNotebook = notebookObj;
 
                     noteListSvc.getNoteList(notebookObj.id && notebookObj.id || 0)
                         .success(function (data, status, headers, config) {
+                            var index = -1;
+
                             $scope.noteList = [];
-                            _.each(data.data, function (val) {
+                            _.each(data.data, function (val, idx) {
+                                if (_.isObject(note) && note.id === val.id ) {
+                                    index = idx;
+                                }
                                 $scope.noteList.push(quicksilverModelSvc.createNote(val));
                             });
 
-                            if ( $scope.noteList.length > 0) {
-                                $scope.selectNote(0);
+                            if ( $scope.noteList.length > 0 ) {
+                                if ( _.isObject(note) ) {
+                                    $scope.selectNote(index);
+                                } else {
+                                    $scope.selectNote(0);
+                                }
                             }
                         });
                 });

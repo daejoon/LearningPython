@@ -60,7 +60,7 @@
                 $scope.hideContextMenu = function ($index) {
                 };
 
-                $scope.selectNotebook = function ($index) {
+                $scope.selectNotebook = function ($index, note) {
                     if ( $scope.notebookListIndex === $index) {
                         _.each($scope.notebookList, function (val, idx) {
                             if ( $index === idx ) {
@@ -73,7 +73,7 @@
                     }
                     $scope.notebookListIndex = $index;
                     var currnetNotebook = $scope.notebookList[$index];
-                    $rootScope.$broadcast("noteListCtrl:selectNotebook", currnetNotebook);
+                    $rootScope.$broadcast("noteListCtrl:selectNotebook", currnetNotebook, note);
                 };
 
                 /**
@@ -185,6 +185,16 @@
 
                 $scope.$on(controllerName + ":addNoteCnt", function (e, noteCnt) {
                     $scope.notebookList[$scope.notebookList.length-1].noteCnt += noteCnt;
+                });
+
+                $scope.$on(controllerName + ":selectNoteBook", function (e, note) {
+                    var index = -1;
+                    _.each($scope.notebookList, function(val, idx) {
+                        if (val.id === note.notebook ) {
+                            index = idx;
+                        }
+                    });
+                    $scope.selectNotebook(index, note);
                 });
 
                 $scope.$watch('notebookListIndex', function (newValue, oldValue) {

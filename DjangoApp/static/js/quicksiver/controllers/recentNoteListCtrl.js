@@ -5,8 +5,8 @@
 
     angular.module(moduleName)
         .controller(controllerName, [
-            '$scope', '$element', '$q', 'recentNoteListSvc', 'quicksilverModelSvc',
-            function($scope, $element, $q, recentNoteListSvc, quicksilverModelSvc) {
+            '$scope', '$rootScope', '$element', '$q', 'recentNoteListSvc', 'quicksilverModelSvc',
+            function($scope, $rootScope, $element, $q, recentNoteListSvc, quicksilverModelSvc) {
                 $scope.recentNoteListIndex = -1;
                 $scope.recentNoteList = [];
 
@@ -21,6 +21,11 @@
                                 $scope.recentNoteList.push(quicksilverModelSvc.createNote(val));
                             });
                         });
+                };
+
+                $scope.clickRecentNote = function ($index) {
+                    console.log("Recent click: " + $index);
+                    $rootScope.$broadcast("notebookListCtrl:selectNoteBook", $scope.recentNoteList[$index]);
                 };
 
                 $scope.$on(controllerName + ':changeNoteList', function (e) {

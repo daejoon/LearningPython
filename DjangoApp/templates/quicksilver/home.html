@@ -67,7 +67,7 @@
                 <div class="col-md-12 padding-left-right-5px" ng-controller="recentNoteListCtrl">
                     <div class="list-group">
                         <!-- loop -->
-                        <a href="" class="list-group-item" ng-repeat="item in recentNoteList">
+                        <a href="" class="list-group-item" ng-repeat="item in recentNoteList" ng-click="clickRecentNote($index)">
                             <i class="fa fa-file-text-o"></i>
                             <span>{% ng item.title %}</span>
                         </a>
