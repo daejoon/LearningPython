@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import logging
 import re
 
 from django.views.generic.base import TemplateView, View
@@ -100,10 +99,12 @@ class TrashView(View):
         NoteBook.objects.filter(isDelete=True).delete()
         return AjaxResponse()
 
+
 class RecentNoteView(View):
     def get(self, request, *args, **kwargs):
         qs = Note.objects.filter(isDelete = False).order_by('-modifyDate', '-regDate')[:3]
         return AjaxResponse(qs)
+
 
 class NoteListView(View):
     def get(self, request, *args, **kwargs):
@@ -113,6 +114,7 @@ class NoteListView(View):
             qs = Note.objects.filter(isDelete=True).order_by('-deleteDate', '-regDate')
 
         return AjaxResponse(qs)
+
 
 class NoteView(View):
     def get(self, request, *args, **kwargs):
