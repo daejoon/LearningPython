@@ -44,7 +44,7 @@ class NotebookListView(View):
         listData = [model_to_dict(item) for item in list(qs)]
 
         for notebook in listData:
-            notebook['noteCnt'] = Note.objects.filter(notebook__pk=notebook['id']).count()
+            notebook['noteCnt'] = Note.objects.filter(notebook__pk=notebook['id'], isDelete=False).count()
 
         return AjaxResponse(listData)
 
@@ -82,7 +82,7 @@ class NotebookListView(View):
                     model.__dict__[name] = data[name]
 
         model.save()
-        notes = Note.objects.filter(notebook__pk=model.pk)
+        notes = Note.objects.filter(notebook__pk=model.pk, isDelete=False)
 
         cvt_model = model_to_dict(model)
         cvt_model['noteCnt'] = notes.count()
@@ -102,14 +102,14 @@ class TrashView(View):
 
 class RecentNoteView(View):
     def get(self, request, *args, **kwargs):
-        qs = Note.objects.filter(isDelete = False).order_by('-modifyDate', '-regDate')[:5]
+        qs = Note.objects.filter(isDelete = False).order_by('-modifyDate', '-regDate')[:3]
         return AjaxResponse(qs)
 
 class NoteListView(View):
     def get(self, request, *args, **kwargs):
         if int(kwargs['notebook_id']) > 0:
-            qs = Note.objects.filter(notebook = kwargs['notebook_id']).order_by('-regDate')
-        else:
+            qs = Note.objects.filter(notebook__pk = kwargs['notebook_id'], isDelete=False).order_by('-regDate')
+        else:#Trash List
             qs = Note.objects.filter(isDelete=True).order_by('-deleteDate', '-regDate')
 
         return AjaxResponse(qs)
@@ -119,10 +119,12 @@ class NoteView(View):
         qs = Note.objects.get(pk=kwargs['note_id'])
         return AjaxResponse(qs)
 
+    # 실제로 삭제하지 않는다. isDelete flag만 변경해준다.
     def delete(self, request, *args, **kwargs):
         try:
             note = Note.objects.get(pk=kwargs['note_id'])
-            note.delete()
+            note.isDelete = True
+            note.save()
         except:
             pass
 

@@ -183,6 +183,10 @@
                         });
                 });
 
+                $scope.$on(controllerName + ":addNoteCnt", function (e, noteCnt) {
+                    $scope.notebookList[$scope.notebookList.length-1].noteCnt += noteCnt;
+                });
+
                 $scope.$watch('notebookListIndex', function (newValue, oldValue) {
                     if ( 0 <= newValue && newValue < $scope.notebookList.length) {
                         _.each($scope.notebookList, function (val, idx) {

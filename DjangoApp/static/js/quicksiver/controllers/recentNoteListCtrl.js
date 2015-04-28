@@ -21,7 +21,7 @@
                         });
                 };
 
-                $scope.$on(controllerName + ':changeNoteList', function () {
+                $scope.$on(controllerName + ':changeNoteList', function (e) {
                     $scope.refash();
                 });
 

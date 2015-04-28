@@ -34,6 +34,8 @@
                                 $scope.noteList.unshift(quicksilverModelSvc.copyNote(data.data));
                                 $scope.selectNote(0);
                                 $scope.currentNotebook.noteCnt++;
+
+                                $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
                             });
                     }
                 };
@@ -63,7 +65,16 @@
                  * 노트를 삭제할때 이벤트
                  */
                 $scope.$on(controllerName + ":deleteNote", function (e) {
-                    $scope.noteList.splice($scope.noteListIndex,1);
+                    var deleteNote = $scope.noteList[$scope.noteListIndex];
+                    noteSvc.deleteNote(deleteNote)
+                        .success(function (data, status, headers, config) {
+                            $scope.noteList.splice($scope.noteListIndex,1);
+                            $scope.currentNotebook.noteCnt--;
+                            $scope.selectNote(0);
+
+                            $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
+                            $rootScope.$broadcast('notebookListCtrl:addNoteCnt', 1);
+                        });
                 });
 
                 /**
