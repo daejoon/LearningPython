@@ -5,8 +5,8 @@
 
     angular.module(moduleName)
         .controller(controllerName, [
-            '$scope', '$rootScope', '$element', '$q', 'recentNoteListSvc', 'quicksilverModelSvc',
-            function($scope, $rootScope, $element, $q, recentNoteListSvc, quicksilverModelSvc) {
+            '$scope', '$rootScope', '$timeout', '$element', '$q', 'recentNoteListSvc', 'quicksilverModelSvc',
+            function($scope, $rootScope, $timeout, $element, $q, recentNoteListSvc, quicksilverModelSvc) {
                 $scope.recentNoteListIndex = -1;
                 $scope.recentNoteList = [];
 

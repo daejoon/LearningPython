@@ -4,8 +4,8 @@
     var controllerName = 'noteCtrl';
     angular.module(moduleName)
         .controller(controllerName, [
-            '$scope', '$rootScope', '$q', 'noteSvc',
-            function ($scope, $rootScope, $q, noteSvc) {
+            '$scope', '$rootScope', '$timeout', '$q', 'noteSvc',
+            function ($scope, $rootScope, $timeout, $q, noteSvc) {
                 $scope.options = {
                     lang: 'ko-KR',
                     height: 550,
@@ -19,7 +19,10 @@
                 $scope.saveNote = function (noteObj) {
                     noteSvc.addNote(noteObj)
                         .success(function (data, status, headers, config) {
-                            $rootScope.$broadcast("recentNoteListCtrl:changeNoteList");
+                            // $scope.clickRecentNote 이벤트와 충돌이 난다. 우선 이렇게 땜빵을 ...
+                            $timeout(function () {
+                                $rootScope.$broadcast("recentNoteListCtrl:changeNoteList");
+                            }, 100);
                         })
                         .error(function (data, status, headers, config) {
                             console.log(status);
@@ -27,8 +30,6 @@
                 };
 
                 $scope.onBlur = function ($event) {
-                    console.log("note onBlur");
-
                     $scope.saveNote($scope.note);
                 };
 
@@ -41,12 +42,10 @@
                 };
 
                 $scope.$on(controllerName + ":selectNote", function (e, noteObj) {
-                    console.log("noteCtrl:selectNote");
                     $scope.note = noteObj;
                 });
 
                 $scope.$watch('note', function (newValue, oldValue) {
-                    console.log('watch note!!');
                     //if ( !_.isEmpty(oldValue) && oldValue.id > 0 ) {
                     //    $scope.saveNote(oldValue);
                     //}
