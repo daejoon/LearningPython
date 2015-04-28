@@ -1,6 +1,8 @@
 ;
 (function (angular, $, _, console) {
-    angular.module('quicksilver.service')
+    var moduleName = "quicksilver.service";
+
+    angular.module(moduleName)
         .factory('quicksilverModelSvc', [
             function() {
 
@@ -50,8 +52,8 @@
             };
         }])
         .factory('notebookListSvc', [
-            '$http', 'quicksilverModelSvc',
-            function ($http, quicksilverModelSvc) {
+            '$http',
+            function ($http) {
 
             return {
                 getNoteBookList: function() {

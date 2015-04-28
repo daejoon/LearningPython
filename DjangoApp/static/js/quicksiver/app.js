@@ -11,11 +11,11 @@
                 console.debug("config");
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';
                 $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
                 $routeProvider
                     .when("/note", {templateUrl: 'quicksilver/tpl/note', controller: 'noteCtrl'});
             }])
         .run(function() {
-            console.debug("run");
             location.href = "#/note";
         });
 })(angular, jQuery, _, window.console&&window.console||{
