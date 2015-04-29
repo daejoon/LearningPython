@@ -16,8 +16,6 @@
                 };
                 $scope.note = {};
 
-                var note_title_id = "#note-title";
-
                 $scope.saveNote = function (noteObj) {
                     noteSvc.addNote(noteObj)
                         .success(function (data, status, headers, config) {

@@ -3,7 +3,8 @@
     var modduleName = "quicksilver.controller";
     var controllerName = "noteListCtrl";
 
-    angular.module(modduleName)
+    angular
+        .module(modduleName)
         .controller(controllerName, [
             '$scope', '$rootScope', '$timeout', '$q', 'noteListSvc', 'noteSvc', 'quicksilverModelSvc',
             function($scope, $rootScope, $timeout, $q, noteListSvc, noteSvc, quicksilverModelSvc) {
