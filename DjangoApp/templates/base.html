@@ -20,8 +20,9 @@
     <link rel="stylesheet" href="{% static 'css/main.css?v=' %}{{ MY_SETTING.version }}" />
 </head>
 <body class="well border-zero padding-zero margin-btm-zero">
-{# 컨텐츠가 삽입되는 부분 #}
+{# begin 컨텐츠가 삽입되는 부분 #}
 {% block content %}{% endblock %}
+{# end 컨텐츠가 삽입되는 부분 #}
 <script src="{% static 'js/lib/jquery/1.11.2/jquery.js?v=' %}{{ MY_SETTING.version }}"></script>
 <script src="{% static 'js/lib/underscore/1.8.3/underscore.js?v=' %}{{ MY_SETTING.version }}"></script>
 <script src="{% static 'js/lib/bootstrap/3.3.4/js/bootstrap.js?v=' %}{{ MY_SETTING.version }}"></script>
@@ -34,7 +35,8 @@
 <script src="{% static 'js/lib/angular-ui-bootstrap/0.12.1/angular-ui-bootstrap.js?v=' %}{{ MY_SETTING.version }}"></script>
 <script src="{% static 'js/lib/angular-ng-context-menu/1.0.1/ng-context-menu.js?v=' %}{{ MY_SETTING.version }}"></script>
 <script src="{% static 'js/lib/angular-summernote/0.3.2/angular-summernote.js?v=' %}{{ MY_SETTING.version }}"></script>
-{# 자바스크립트가 삽입되는 부분 #}
+{# begin 자바스크립트가 삽입되는 부분 #}
 {% block script %}{% endblock script %}
+{# end 자바스크립트가 삽입되는 부분 #}
 </body>
 </html>
