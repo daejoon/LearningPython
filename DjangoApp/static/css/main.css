@@ -44,3 +44,7 @@ html, body {
 .top-menu {
     z-index: 2000 !important;
 }
+
+.hidden {
+    display: none;
+}

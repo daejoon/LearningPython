@@ -102,14 +102,14 @@ class TrashView(View):
 
 class RecentNoteView(View):
     def get(self, request, *args, **kwargs):
-        qs = Note.objects.filter(isDelete = False).order_by('-modifyDate', '-regDate')[:3]
+        qs = Note.objects.filter(isDelete=False).order_by('-modifyDate', '-regDate')[:5]
         return AjaxResponse(qs)
 
 
 class NoteListView(View):
     def get(self, request, *args, **kwargs):
         if int(kwargs['notebook_id']) > 0:
-            qs = Note.objects.filter(notebook__pk = kwargs['notebook_id'], isDelete=False).order_by('-regDate')
+            qs = Note.objects.filter(notebook__pk=kwargs['notebook_id'], isDelete=False).order_by('-regDate')
         else:#Trash List
             qs = Note.objects.filter(isDelete=True).order_by('-deleteDate', '-regDate')
 

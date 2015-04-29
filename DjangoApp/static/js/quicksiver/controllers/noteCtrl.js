@@ -16,6 +16,8 @@
                 };
                 $scope.note = {};
 
+                var note_title_id = "#note-title";
+
                 $scope.saveNote = function (noteObj) {
                     noteSvc.addNote(noteObj)
                         .success(function (data, status, headers, config) {
@@ -43,6 +45,9 @@
 
                 $scope.$on(controllerName + ":selectNote", function (e, noteObj) {
                     $scope.note = noteObj;
+                    $timeout(function () {
+                        $(note_title_id).trigger("select");
+                    }, 100);
                 });
 
                 $scope.$watch('note', function (newValue, oldValue) {

@@ -3,7 +3,6 @@
 {% load settings_tags %}
 {% load angularjs_tags %}
 {% get_my_setting as MY_SETTING %}
-{% csrf_token %}
 
 {% block title %}{{ title }}{% endblock title %}
 {% block content %}
@@ -69,7 +68,7 @@
                         <!-- loop -->
                         <a href="" class="list-group-item" ng-repeat="item in recentNoteList" ng-click="clickRecentNote($index)">
                             <i class="fa fa-file-text-o"></i>
-                            <span>{% ng item.title %}</span>
+                            <span>{% ng item.title | shortcut:15 %}</span>
                         </a>
                         <!--// loop -->
                     </div>
@@ -96,7 +95,7 @@
                            ng-class="{'active': item.isFocus}"
                            context-menu="showContextMenu($index)"
                            data-target="note-contextmenu">
-                            <h5 class="list-group-item-heading">{% ng item.title %}</h5>
+                            <h5 class="list-group-item-heading">{% ng item.title | shortcut:15 %}</h5>
                             <p class="list-group-item-text">{% ng item.regDate | limitTo:10 %}</p>
                         </a>
                         <!--//loop -->
@@ -141,6 +140,10 @@
         <li role="presentation" class="divider"></li>
         <li><a tabindex="2" href="" ng-click="deleteNote($event)">Delete Note</a></li>
     </ul>
+</div>
+
+<div style="display:none">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 </div>
 {% endblock content %}
 
