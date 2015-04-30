@@ -92,11 +92,12 @@
                     noteSvc.deleteNote(deleteNote)
                         .success(function (data, status, headers, config) {
                             $scope.noteList.splice($scope.noteListIndex,1);
-                            $scope.currentNotebook.noteCnt--;
-                            $scope.selectNote(0);
 
+                            $scope.currentNotebook.noteCnt--;
                             $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
                             $rootScope.$broadcast('notebookListCtrl:addTrashNoteCnt', 1);
+
+                            $scope.selectNote(0);
                         });
                 });
 

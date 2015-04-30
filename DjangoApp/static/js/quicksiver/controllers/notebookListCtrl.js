@@ -100,7 +100,7 @@
                 };
 
                 /**
-                 * input bulr
+                 * input blur
                  * @param $event
                  * @param $index
                  */
@@ -150,11 +150,15 @@
 
                 $scope.$on("notebookListCtrl:deleteNotebook", function (e) {
                     var currentNotebook = $scope.notebookList[$scope.notebookListIndex];
-                    notebookListSvc.deleteNoteBook(currentNotebook)
-                        .then(function (result) {
+                    notebookListSvc
+                        .deleteNoteBook(currentNotebook)
+                        .success(function (data) {
+                            var deleteNoteCnt = $scope.notebookList[$scope.notebookListIndex].noteCnt;
+                            $scope.notebookList[$scope.notebookList.length-1].noteCnt += deleteNoteCnt;
                             $scope.notebookList.splice($scope.notebookListIndex, 1);
                             $scope.selectNotebook(0);
-                        }, function (data, status) {
+                        })
+                        .error(function (data, status) {
                             console.error(status);
                         });
                 });
