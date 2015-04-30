@@ -48,3 +48,36 @@ html, body {
 .hidden {
     display: none;
 }
+
+.filter-date {
+    position: relative;
+    font-size: 13px;
+    padding-top: 40px;
+    margin: -7px auto 10px;
+}
+.filter-parent {
+    position: relative;
+    font-size: 18px;
+    padding-top: 40px;
+    margin: -25px auto 10px;
+}
+.filter-parent label {
+    position: absolute;
+    left: 17px;
+    top: 45px;
+}
+.filter-parent #filter-by,
+.filter-parent .hint {
+    padding-left: 43px;
+    padding-right: 43px;
+    border-radius: 23px;
+}
+.filter-parent .hint {
+    color: #aaa;
+}
+.filter-parent #filter-clear {
+    text-decoration: none;
+    position: absolute;
+    right: 18px;
+    top: 48px;
+}

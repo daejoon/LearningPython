@@ -108,11 +108,35 @@
         <div class="col-md-8 table-bordered fill-height" ng-controller="noteCtrl">
             <div class="row">
                 <div class="col-md-12 padding-left-right-5px">
-                    <h5>
-                        Note
-                        <a href="" ng-click="prevNote()"><i class="fa fa-caret-square-o-left fa-lg"></i></a>
-                        <a href="" ng-click="nextNote()"><i class="fa fa-caret-square-o-right fa-lg"></i></a>
-                    </h5>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="filter-date">
+                                        Create Date: {% ng note.regDate | limitTo:10 %}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Modify Date: {% ng note.modifyDate | limitTo:10 %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="filter-parent" id="search">
+                                        <label for="filter-by"><i class="fa fa-search"></i></label>
+                                        <input placeholder="Search notes"
+                                               id="filter-by"
+                                               class="form-control"
+                                               tabindex="1"
+                                               ng-model="searchText"
+                                                ng-keypress="keypressSearchText($event)">
+                                        <a href="" id="filter-clear" class="fa fa-times" ng-show="searchText.length>0" ng-click="clickSearchTextClear()"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">

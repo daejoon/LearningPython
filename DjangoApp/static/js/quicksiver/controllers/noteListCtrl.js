@@ -127,7 +127,7 @@
                  * 현재 노트북을 감시한다.
                  */
                 $scope.$watch('currentNotebook', function (newValue, oldValue) {
-                    console.log("watch currentNotebook");
+                    console.log("watch currentNotebook newValue=" + newValue + ", oldValue=" + oldValue);
                 }, true);
 
                 /**

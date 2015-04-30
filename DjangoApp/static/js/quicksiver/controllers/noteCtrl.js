@@ -15,6 +15,7 @@
                     tabsize: 4
                 };
                 $scope.note = {};
+                $scope.searchText = "";
 
                 $scope.saveNote = function (noteObj) {
                     noteSvc.addNote(noteObj)
@@ -39,6 +40,16 @@
 
                 $scope.nextNote = function () {
                     $rootScope.$broadcast("noteListCtrl:nextNote");
+                };
+
+                $scope.keypressSearchText = function ($event) {
+                    if ( $event.which === 13 ) {
+                        alert("Enter!!");
+                    }
+                };
+
+                $scope.clickSearchTextClear = function () {
+                    $scope.searchText = "";
                 };
 
                 $scope.$on(controllerName + ":selectNote", function (e, noteObj) {
