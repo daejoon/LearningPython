@@ -7,8 +7,8 @@ from django.forms.models import model_to_dict
 import json
 
 class AjaxResponse(JsonResponse):
-    def __init__(self, data={}, encoder=DjangoJSONEncoder, safe=True, **kwargs):
-        newData = {}
+    def __init__(self, data={}, paramDic={}, encoder=DjangoJSONEncoder, safe=True, **kwargs):
+        newData = dict()
         try:
             if isinstance(data, QuerySet):
                 newData['data'] = [model_to_dict(item) for item in list(data)]
@@ -23,10 +23,11 @@ class AjaxResponse(JsonResponse):
                 newData['message'] = ''
         except Exception as e:
             newData['status'] = False
-            newData['message'] = e.message
+            newData['message'] = str(e)
         else:
             newData['status'] = True
         finally:
+            newData = dict(newData.items() + paramDic.items())
             super(AjaxResponse, self).__init__(newData, encoder, safe, **kwargs)
 
 class AjaxRequest(object):
