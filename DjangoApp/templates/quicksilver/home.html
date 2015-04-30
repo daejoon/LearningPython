@@ -79,8 +79,9 @@
         <!-- note controller -->
         <div class="col-md-2 table-bordered fill-height" ng-controller="noteListCtrl">
             <div class="row">
-                <div class="col-md-12 padding-left-right-5px" ng-switch="currentNotebook.id">
-                    <h5 ng-switch-when="0">{% ng currentNotebook.title %}</h5>
+                <div class="col-md-12 padding-left-right-5px" ng-switch="notebookType">
+                    <h5 ng-switch-when="trash">{% ng currentNotebook.title %}</h5>
+                    <h5 ng-switch-when="search">Search</h5>
                     <h5 ng-switch-default><a href="" ng-click="addNote()"><i class="fa fa-plus"></i> {% ng currentNotebook.title %}</a></h5>
                 </div>
             </div>

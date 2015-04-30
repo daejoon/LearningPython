@@ -1,13 +1,20 @@
 ;
 (function (angular, $, _, console) {
+    'use strict';
+
     angular.module('quicksilver', ['ngRoute', 'quicksilver.controller', 'quicksilver.service']);
     angular.module('quicksilver.controller' , ['summernote', 'ng-context-menu', 'quicksilver.service']);
     angular.module('quicksilver.service' , []);
 
-    angular.module('quicksilver')
+    angular
+        .module('quicksilver')
+        .constant('myConfig', {
+        })
         .config([
             '$routeProvider', '$httpProvider', '$filterProvider',
             function ($routeProvider, $httpProvider, $filterProvider) {
+                'usee strict';
+
                 console.debug("config");
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';
                 $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';

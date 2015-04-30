@@ -44,12 +44,13 @@
 
                 $scope.keypressSearchText = function ($event) {
                     if ( $event.which === 13 ) {
-                        alert("Enter!!");
+                        $rootScope.$broadcast("noteListCtrl:searchText", $scope.searchText);
                     }
                 };
 
                 $scope.clickSearchTextClear = function () {
                     $scope.searchText = "";
+                    $rootScope.$broadcast("notebookListCtrl:initSearch");
                 };
 
                 $scope.$on(controllerName + ":selectNote", function (e, noteObj) {

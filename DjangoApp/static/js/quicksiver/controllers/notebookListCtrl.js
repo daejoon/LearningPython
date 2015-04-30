@@ -7,6 +7,7 @@
         .controller(controllerName,[
             '$scope', '$rootScope', '$element', '$q', 'notebookListSvc', 'quicksilverModelSvc', '$timeout',
             function($scope, $rootScope, $element, $q, notebookListSvc, quicksilverModelSvc, $timeout) {
+                'use strict';
 
                 $scope.notebookList = [];
                 $scope.notebookListIndex = -1;
@@ -34,7 +35,7 @@
                     $scope.notebookListIndex = $index;
 
                     // 마지막 요소인지 검사한다.
-                    if ( $index+1 === $scope.notebookList.length ) {
+                    if ( $scope.notebookList[$scope.notebookListIndex].type.toLowerCase() === "trash") {
                         $("#notebook-contextmenu")
                                 .find("li")
                                 .hide()
@@ -42,7 +43,7 @@
                                 .find("li")
                                 .last()
                                 .show();
-                    } else {
+                    } else if ($scope.notebookList[$scope.notebookListIndex].type.toLowerCase() === "notebook") {
                         $("#notebook-contextmenu")
                                 .find("li")
                                 .show()
@@ -89,7 +90,6 @@
                         notebookListSvc.addNoteBook(currentNotebook)
                             .success(function (data, status) {
                                 $scope.notebookList[$scope.notebookListIndex] = quicksilverModelSvc.copyNoteBook(data.data);
-
                                 $scope.notebookList[$scope.notebookListIndex].isModify = false;
                                 $scope.selectNotebook($scope.notebookListIndex);
                             })
@@ -126,10 +126,10 @@
                  */
                 $scope.dblClickTtile = function ($index) {
                     $scope.notebookListIndex = $index;
-                    if ( $scope.notebookList.length-1 === $scope.notebookListIndex ) {
+                    if ( $scope.notebookList[$index].type.toLowerCase() === "trash" ) {
                         $scope.notebookList[$index].isFocus = true;
                         $scope.notebookList[$index].isModify = false;
-                    } else {
+                    } else if ( $scope.notebookList[$index].type.toLowerCase() === "notebook" ) {
                         $scope.notebookList[$index].isFocus = true;
                         $scope.notebookList[$index].isModify = true;
                     }
@@ -139,7 +139,7 @@
                     }, 0);
                 };
 
-                $scope.$on(controllerName + ":renameNotebook", function (e) {
+                $scope.$on("notebookListCtrl:renameNotebook", function (e) {
                     $scope.notebookList[$scope.notebookListIndex].isFucos = true;
                     $scope.notebookList[$scope.notebookListIndex].isModify = true;
 
@@ -148,31 +148,18 @@
                     }, 0);
                 });
 
-                $scope.$on(controllerName + ":deleteNotebook", function (e) {
+                $scope.$on("notebookListCtrl:deleteNotebook", function (e) {
                     var currentNotebook = $scope.notebookList[$scope.notebookListIndex];
                     notebookListSvc.deleteNoteBook(currentNotebook)
                         .then(function (result) {
                             $scope.notebookList.splice($scope.notebookListIndex, 1);
-                            $scope.selectNotebook(0);
-
-                            return notebookListSvc.getTrashNoteList();
-                        }, function (data, status) {
-                            console.error(status);
-                        })
-                        .then(function (result) {
-                            $scope.notebookList[$scope.notebookList.length-1] = quicksilverModelSvc.copyNoteBook({
-                                title: 'Trash',
-                                noteCnt: result.data.data.length,
-                                isModify: false
-                            });
-                            // 첫번째 노트북을 선택해 준다.
                             $scope.selectNotebook(0);
                         }, function (data, status) {
                             console.error(status);
                         });
                 });
 
-                $scope.$on(controllerName + ":emptyTrash", function (e) {
+                $scope.$on("notebookListCtrl:emptyTrash", function (e) {
                     notebookListSvc.deleteTrashNoteList()
                         .success(function (data, status) {
                             $scope.notebookList[$scope.notebookList.length-1].noteCnt = 0;
@@ -183,11 +170,13 @@
                         });
                 });
 
-                $scope.$on(controllerName + ":addNoteCnt", function (e, noteCnt) {
-                    $scope.notebookList[$scope.notebookList.length-1].noteCnt += noteCnt;
+                $scope.$on("notebookListCtrl:addTrashNoteCnt", function (e, noteCnt) {
+                    if ( $scope.notebookList[$scope.notebookList.length-1].type.toLowerCase() === "trash" ) {
+                        $scope.notebookList[$scope.notebookList.length-1].noteCnt += noteCnt;
+                    }
                 });
 
-                $scope.$on(controllerName + ":selectNoteBook", function (e, note) {
+                $scope.$on("notebookListCtrl:selectNoteBook", function (e, note) {
                     var index = -1;
                     _.each($scope.notebookList, function(val, idx) {
                         if (val.id === note.notebook ) {
@@ -195,6 +184,10 @@
                         }
                     });
                     $scope.selectNotebook(index, note);
+                });
+
+                $scope.$on("notebookListCtrl:initSearch", function (e) {
+                    $scope.selectNotebook($scope.notebookListIndex);
                 });
 
                 $scope.$watch('notebookListIndex', function (newValue, oldValue) {
@@ -214,16 +207,11 @@
                 /**
                  * 초기화
                  */
-                $q.all([notebookListSvc.getNoteBookList(), notebookListSvc.getTrashNoteList()])
+                $q.all([notebookListSvc.getNoteBookList()])
                     .then(function (resultArray) {
                         _.each(resultArray[0].data.data, function (val, idx) {
                             $scope.notebookList.push(quicksilverModelSvc.createNoteBook(val));
                         });
-                        $scope.notebookList.push(quicksilverModelSvc.createNoteBook({
-                            title: 'Trash',
-                            noteCnt: resultArray[1].data.data.length,
-                            isModify: false
-                        }));
 
                         // 첫번째 노트북을 선택해 준다.
                         $scope.selectNotebook(0);

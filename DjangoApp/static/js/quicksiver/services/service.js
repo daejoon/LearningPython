@@ -14,6 +14,7 @@
                 createNoteBook: function(setting) {
                     return _.extendOwn({
                         id: 0,
+                        type: 'notebook', // notebook, search, trash 3가지 종류
                         title: 'Untitled Notebook',
                         isDelete: false,
                         isModify: false,
@@ -80,6 +81,9 @@
             return {
                 getNoteList: function(notebook_id) {
                     return $http.get("/quicksilver/notelist/"+notebook_id);
+                },
+                getNoteListSearch: function(searchText) {
+                    return $http.get("/quicksilver/notelist/search/"+searchText);
                 }
             };
         }])

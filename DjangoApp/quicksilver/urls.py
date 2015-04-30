@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^trash/$', TrashView.as_view(), name='trash'),
     url(r'^recentnote/$', RecentNoteView.as_view(), name='recentnote'),
     url(r'^notelist/(?P<notebook_id>-?\d+)$', NoteListView.as_view(), name='notelist'),
+    url(r'^notelist/search/(?P<search_text>.+)$', NoteListView.as_view(), name='notelist_search'),
     url(r'^note/(?P<note_id>-?\d+)?$', NoteView.as_view(), name='note'),
 ]

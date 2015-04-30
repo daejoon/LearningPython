@@ -11,14 +11,37 @@
                 $scope.noteList = [];
                 $scope.noteListIndex = -1;
                 $scope.currentNotebook = quicksilverModelSvc.createNoteBook();
+                $scope.notebookType = "";
 
                 /**
-                 * context-menu를 보여준다.
+                 * 메뉴가 보일때
                  * @param $index
                  */
                 $scope.showContextMenu = function ($index) {
-                    console.log($index);
                     $scope.noteListIndex = $index;
+
+                    // 마지막 요소인지 검사한다.
+                    if ( $scope.notebookType.toLowerCase() === "trash") {
+                        $("#note-contextmenu")
+                                .find("li")
+                                .hide()
+                            .end()
+                                .find("li")
+                                .last()
+                                .show();
+                    } else if ($scope.notebookType.toLowerCase() === "notebook") {
+                        $("#note-contextmenu")
+                                .find("li")
+                                .show();
+                    } else if ( $scope.notebookType.toLowerCase() === "search" ) {
+                        $("#note-contextmenu")
+                                .find("li")
+                                .hide()
+                            .end()
+                                .find("li")
+                                .last()
+                                .show();
+                    }
                 };
 
                 /**
@@ -56,7 +79,7 @@
                 /**
                  * 노트를 복사할때 이벤트
                  */
-                $scope.$on(controllerName + ":duplicateNote", function (e) {
+                $scope.$on("noteListCtrl:duplicateNote", function (e) {
                     var copyItem = $scope.noteList[$scope.noteListIndex];
                     $scope.addNote(copyItem);
                 });
@@ -64,7 +87,7 @@
                 /**
                  * 노트를 삭제할때 이벤트
                  */
-                $scope.$on(controllerName + ":deleteNote", function (e) {
+                $scope.$on("noteListCtrl:deleteNote", function (e) {
                     var deleteNote = $scope.noteList[$scope.noteListIndex];
                     noteSvc.deleteNote(deleteNote)
                         .success(function (data, status, headers, config) {
@@ -73,19 +96,20 @@
                             $scope.selectNote(0);
 
                             $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
-                            $rootScope.$broadcast('notebookListCtrl:addNoteCnt', 1);
+                            $rootScope.$broadcast('notebookListCtrl:addTrashNoteCnt', 1);
                         });
                 });
 
                 /**
                  * 노트북이 선택되었을때 이벤트
                  */
-                $scope.$on(controllerName + ":selectNotebook", function (e, notebookObj, note) {
+                $scope.$on("noteListCtrl:selectNotebook", function (e, notebookObj, note) {
                     $scope.currentNotebook = notebookObj;
 
                     noteListSvc.getNoteList(notebookObj.id && notebookObj.id || 0)
                         .success(function (data, status, headers, config) {
                             var index = -1;
+                            $scope.notebookType = data.notebookType;
 
                             $scope.noteList = [];
                             _.each(data.data, function (val, idx) {
@@ -108,7 +132,7 @@
                 /**
                  * 이전 노트로 이동
                  */
-                $scope.$on(controllerName + ":prevNote", function () {
+                $scope.$on(controllerName + ":prevNote", function (e) {
                     if ( $scope.noteListIndex > 0 ) {
                         $scope.selectNote($scope.noteListIndex - 1);
                     }
@@ -117,10 +141,26 @@
                 /**
                  * 이후 노트로 이동
                  */
-                $scope.$on(controllerName + ":nextNote", function () {
+                $scope.$on(controllerName + ":nextNote", function (e) {
                     if ( $scope.noteListIndex < $scope.noteList.length-1 ) {
                         $scope.selectNote($scope.noteListIndex + 1);
                     }
+                });
+
+                /**
+                 * 검색
+                 */
+                $scope.$on(controllerName + ":searchText", function (e, searchText) {
+                    noteListSvc.getNoteListSearch(searchText)
+                        .success(function (data, status, headers, config) {
+                            $scope.notebookType = data.notebookType;
+
+                            $scope.noteList = [];
+                            _.each(data.data, function (val, idx) {
+                                $scope.noteList.push(quicksilverModelSvc.createNote(val));
+                            });
+                            $scope.selectNote(0);
+                        });
                 });
 
                 /**

@@ -5,6 +5,7 @@ import re
 from django.views.generic.base import TemplateView, View
 
 from django.forms.models import model_to_dict
+from django.db.models import Q
 
 from django.utils import timezone
 from django.utils.log import getLogger
@@ -40,10 +41,20 @@ class NotebookListView(View):
 
     def get(self, request, *args, **kwargs):
         qs = NoteBook.objects.filter(isDelete=False).order_by('-regDate')
-        listData = [model_to_dict(item) for item in list(qs)]
 
+        listData = [model_to_dict(item) for item in list(qs)]
         for notebook in listData:
+            notebook['type'] = 'notebook'
             notebook['noteCnt'] = Note.objects.filter(notebook__pk=notebook['id'], isDelete=False).count()
+
+        # Trash 추가한다.
+        listData.append({
+            'type': 'trash',
+            'id': 0,
+            'title': 'Trash',
+            'isModify': False,
+            'noteCnt': Note.objects.filter(isDelete=True).order_by('-regDate').count()
+        })
 
         return AjaxResponse(listData)
 
@@ -84,6 +95,7 @@ class NotebookListView(View):
         notes = Note.objects.filter(notebook__pk=model.pk, isDelete=False)
 
         cvt_model = model_to_dict(model)
+        cvt_model['type'] = 'notebook'
         cvt_model['noteCnt'] = notes.count()
         return AjaxResponse(cvt_model)
 
@@ -108,12 +120,25 @@ class RecentNoteView(View):
 
 class NoteListView(View):
     def get(self, request, *args, **kwargs):
-        if int(kwargs['notebook_id']) > 0:
+        notebookType = None
+
+        #notebook
+        if 'notebook_id' in kwargs and int(kwargs['notebook_id']) > 0:
             qs = Note.objects.filter(notebook__pk=kwargs['notebook_id'], isDelete=False).order_by('-regDate')
+            notebookType = "notebook"
+        #search
+        elif 'search_text' in kwargs:
+            qs = Note.objects\
+                .filter(isDelete=False)\
+                .filter(Q(title__icontains=kwargs['search_text']) | Q(content__icontains=kwargs['search_text']))\
+                .order_by('-regDate')
+            notebookType = "search"
+        #trash
         else:#Trash List
             qs = Note.objects.filter(isDelete=True).order_by('-deleteDate', '-regDate')
+            notebookType = "trash"
 
-        return AjaxResponse(qs)
+        return AjaxResponse(qs, paramDic={'notebookType':notebookType})
 
 
 class NoteView(View):
