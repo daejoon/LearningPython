@@ -110,6 +110,9 @@
                 },
                 deleteNote: function(noteObj) {
                     return $http.delete("/quicksilver/note/"+noteObj.id);
+                },
+                trashDeleteNote: function(noteObj) {
+                    return $http.delete("/quicksilver/trash/" + noteObj.id);
                 }
             };
         }]);

@@ -8,7 +8,7 @@
             function ($scope, $rootScope, $timeout, $q, noteSvc) {
                 $scope.options = {
                     lang: 'ko-KR',
-                    height: 550,
+                    height: 500,
                     minHeight: null,             // set minimum height of editor
                     maxHeight: null,             // set maximum height of editor
                     focus: true,

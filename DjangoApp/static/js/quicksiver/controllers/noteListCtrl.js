@@ -89,15 +89,30 @@
                  */
                 $scope.$on("noteListCtrl:deleteNote", function (e) {
                     var deleteNote = $scope.noteList[$scope.noteListIndex];
-                    noteSvc.deleteNote(deleteNote)
+                    var fnName = "deleteNote";
+
+                    switch ($scope.notebookType.toLowerCase()) {
+                        case "notebook":
+                        case "search":
+                            fnName = "deleteNote";
+                            break;
+                        case "trash":
+                            fnName = "trashDeleteNote";
+                            break;
+                    }
+
+                    noteSvc[fnName](deleteNote)
                         .success(function (data, status, headers, config) {
-                            $scope.noteList.splice($scope.noteListIndex,1);
-
-                            $scope.currentNotebook.noteCnt--;
                             $rootScope.$broadcast('recentNoteListCtrl:changeNoteList');
-                            $rootScope.$broadcast('notebookListCtrl:addTrashNoteCnt', 1);
-
+                            $rootScope.$broadcast('notebookListCtrl:changeNoteCnt', {
+                                notebook_id: deleteNote.notebook,
+                                notebookType: $scope.notebookType
+                            });
+                            $scope.noteList.splice($scope.noteListIndex,1);
                             $scope.selectNote(0);
+                        })
+                        .error(function(data, status) {
+                            console.log(status);
                         });
                 });
 

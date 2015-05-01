@@ -174,9 +174,27 @@
                         });
                 });
 
-                $scope.$on("notebookListCtrl:addTrashNoteCnt", function (e, noteCnt) {
-                    if ( $scope.notebookList[$scope.notebookList.length-1].type.toLowerCase() === "trash" ) {
-                        $scope.notebookList[$scope.notebookList.length-1].noteCnt += noteCnt;
+                $scope.$on("notebookListCtrl:changeNoteCnt", function (e, setting) {
+                    setting = _.extendOwn({
+                        notebook_id: 0,
+                        notebookType: "notebook"
+                    }, setting||{});
+
+                    switch (setting.notebookType.toLowerCase()) {
+                        case "trash":
+                            $scope.notebookList[$scope.notebookList.length-1].noteCnt -= 1;
+                            break;
+                        case "notebook":
+                            $scope.notebookList[$scope.notebookListIndex].noteCnt -= 1;
+                            $scope.notebookList[$scope.notebookList.length-1].noteCnt += 1;
+                            break;
+                        case "search":
+                            var searchNoteBook = _.find($scope.notebookList, function (val) {
+                                return val.id === setting.notebook_id;
+                            });
+                            searchNoteBook.noteCnt -= 1;
+                            $scope.notebookList[$scope.notebookList.length-1].noteCnt += 1;
+                            break;
                     }
                 });
 

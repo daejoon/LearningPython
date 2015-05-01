@@ -107,8 +107,15 @@ class TrashView(View):
 
     def delete(self, request, *args, **kwargs):
         # 실제 테이블에서 삭제가 이루어진다.
-        Note.objects.filter(isDelete=True).delete()
-        NoteBook.objects.filter(isDelete=True).delete()
+        try:
+            if 'note_id' in kwargs:
+                Note.objects.filter(pk=kwargs['note_id']).delete()
+            else:
+                Note.objects.filter(isDelete=True).delete()
+                NoteBook.objects.filter(isDelete=True).delete()
+        except:
+            pass
+
         return AjaxResponse()
 
 
