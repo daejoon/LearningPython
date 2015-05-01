@@ -167,16 +167,16 @@
     </ul>
 </div>
 
-<div style="display:none">
+<div class="hidden">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 </div>
 {% endblock content %}
 
 {% block script %}
-<script src="{% static 'js/quicksiver/app.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksiver/controllers/notebookListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksiver/controllers/noteCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksiver/controllers/noteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksiver/controllers/recentNoteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksiver/services/service.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/app.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/notebookListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/noteCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/noteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/recentNoteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/services/service.js?v=' %}{{ MY_SETTING.version }}"></script>
 {% endblock script %}
