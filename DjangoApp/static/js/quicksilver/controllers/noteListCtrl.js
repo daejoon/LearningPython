@@ -8,6 +8,8 @@
         .controller(controllerName, [
             '$scope', '$rootScope', '$timeout', '$q', 'noteListSvc', 'noteSvc', 'quicksilverModelSvc',
             function($scope, $rootScope, $timeout, $q, noteListSvc, noteSvc, quicksilverModelSvc) {
+                'use strict';
+
                 $scope.noteList = [];
                 $scope.noteListIndex = -1;
                 $scope.currentNotebook = quicksilverModelSvc.createNoteBook();

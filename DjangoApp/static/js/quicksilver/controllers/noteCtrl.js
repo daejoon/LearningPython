@@ -2,10 +2,13 @@
 (function (angular, $, _, console) {
     var moduleName = 'quicksilver.controller';
     var controllerName = 'noteCtrl';
-    angular.module(moduleName)
+    angular
+        .module(moduleName)
         .controller(controllerName, [
             '$scope', '$rootScope', '$timeout', '$q', 'noteSvc',
             function ($scope, $rootScope, $timeout, $q, noteSvc) {
+                'use strict';
+
                 $scope.options = {
                     lang: 'ko-KR',
                     height: 500,

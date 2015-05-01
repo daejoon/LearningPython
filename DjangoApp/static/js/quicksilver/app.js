@@ -13,7 +13,7 @@
         .config([
             '$routeProvider', '$httpProvider', '$filterProvider',
             function ($routeProvider, $httpProvider, $filterProvider) {
-                'usee strict';
+                'use strict';
 
                 console.debug("config");
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';

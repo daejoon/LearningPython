@@ -3,7 +3,8 @@
     var moduleName = 'quicksilver.controller';
     var controllerName = "recentNoteListCtrl";
 
-    angular.module(moduleName)
+    angular
+        .module(moduleName)
         .controller(controllerName, [
             '$scope', '$rootScope', '$timeout', '$element', '$q', 'recentNoteListSvc', 'quicksilverModelSvc',
             function($scope, $rootScope, $timeout, $element, $q, recentNoteListSvc, quicksilverModelSvc) {
