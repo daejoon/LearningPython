@@ -18,7 +18,8 @@
                  */
                 $scope.newNotebook = function () {
                     var newNotebook = quicksilverModelSvc.createNoteBook();
-                    notebookListSvc.addNoteBook(newNotebook)
+                    notebookListSvc
+                        .addNoteBook(newNotebook)
                         .success(function (data, status) {
                             $scope.notebookList.unshift(quicksilverModelSvc.copyNoteBook(data.data));
                             $scope.selectNotebook(0);
@@ -88,7 +89,8 @@
                         $scope.notebookListIndex = $index;
                         var currentNotebook = $scope.notebookList[$scope.notebookListIndex];
 
-                        notebookListSvc.addNoteBook(currentNotebook)
+                        notebookListSvc
+                            .addNoteBook(currentNotebook)
                             .success(function (data, status) {
                                 $scope.notebookList[$scope.notebookListIndex] = quicksilverModelSvc.copyNoteBook(data.data);
                                 $scope.notebookList[$scope.notebookListIndex].isModify = false;
@@ -109,7 +111,8 @@
                     var currentNotebook = $scope.notebookList[$index];
 
                     if (currentNotebook.id !== 0 ) {
-                        notebookListSvc.addNoteBook(currentNotebook)
+                        notebookListSvc
+                            .addNoteBook(currentNotebook)
                             .success(function (data, status) {
                                 $scope.notebookList[$index] = quicksilverModelSvc.copyNoteBook(data.data);
                                 $scope.notebookList[$index].isFocus = false;
@@ -165,7 +168,8 @@
                 });
 
                 $scope.$on("notebookListCtrl:emptyTrash", function (e) {
-                    notebookListSvc.deleteTrashNoteList()
+                    notebookListSvc
+                        .deleteTrashNoteList()
                         .success(function (data, status) {
                             $scope.notebookList[$scope.notebookList.length-1].noteCnt = 0;
                             $scope.selectNotebook($scope.notebookList.length - 1);
@@ -243,6 +247,8 @@
         .controller('notebookContextMenuCtrl', [
             '$scope', '$rootScope', '$element',
             function($scope, $rootScope, $element) {
+                'use strict';
+
                 $scope.renameNotebook = function () {
                     $rootScope.$broadcast(controllerName + ":renameNotebook");
                     $element.removeClass("open");

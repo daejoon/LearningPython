@@ -55,7 +55,8 @@
                         newNote = newNote || quicksilverModelSvc.createNote();
                         newNote.notebook = $scope.currentNotebook.id;
                         newNote.id = 0;
-                        noteSvc.addNote(newNote)
+                        noteSvc
+                            .addNote(newNote)
                             .success(function (data, status, headers, config) {
                                 $scope.noteList.unshift(quicksilverModelSvc.copyNote(data.data));
                                 $scope.selectNote(0);
@@ -124,7 +125,8 @@
                 $scope.$on("noteListCtrl:selectNotebook", function (e, notebookObj, note) {
                     $scope.currentNotebook = notebookObj;
 
-                    noteListSvc.getNoteList(notebookObj.id && notebookObj.id || 0)
+                    noteListSvc
+                        .getNoteList(notebookObj.id && notebookObj.id || 0)
                         .success(function (data, status, headers, config) {
                             var index = -1;
                             $scope.notebookType = data.notebookType;
@@ -150,7 +152,7 @@
                 /**
                  * 이전 노트로 이동
                  */
-                $scope.$on(controllerName + ":prevNote", function (e) {
+                $scope.$on("noteListCtrl:prevNote", function (e) {
                     if ( $scope.noteListIndex > 0 ) {
                         $scope.selectNote($scope.noteListIndex - 1);
                     }
@@ -159,7 +161,7 @@
                 /**
                  * 이후 노트로 이동
                  */
-                $scope.$on(controllerName + ":nextNote", function (e) {
+                $scope.$on("noteListCtrl:nextNote", function (e) {
                     if ( $scope.noteListIndex < $scope.noteList.length-1 ) {
                         $scope.selectNote($scope.noteListIndex + 1);
                     }
@@ -168,8 +170,9 @@
                 /**
                  * 검색
                  */
-                $scope.$on(controllerName + ":searchText", function (e, searchText) {
-                    noteListSvc.getNoteListSearch(searchText)
+                $scope.$on("noteListCtrl:searchText", function (e, searchText) {
+                    noteListSvc
+                        .getNoteListSearch(searchText)
                         .success(function (data, status, headers, config) {
                             $scope.notebookType = data.notebookType;
 
@@ -198,6 +201,8 @@
         .controller('noteContextMenuCtrl', [
             '$scope', '$rootScope', '$element',
             function($scope, $rootScope, $element) {
+                'use strict';
+
                 $scope.duplicateNote = function ($event) {
                     $rootScope.$broadcast(controllerName + ":duplicateNote");
                     $element.removeClass("open");

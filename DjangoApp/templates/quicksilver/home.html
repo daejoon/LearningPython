@@ -115,7 +115,7 @@
                                 <div class="col-md-12">
                                     <div class="filter-date">
                                         Create Date: {% ng note.regDate | limitTo:10 %}
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         Modify Date: {% ng note.modifyDate | limitTo:10 %}
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                                                class="form-control"
                                                tabindex="1"
                                                ng-model="searchText"
-                                                ng-keypress="keypressSearchText($event)">
+                                               ng-keypress="keypressSearchText($event)">
                                         <a href="" id="filter-clear" class="fa fa-times" ng-show="searchText.length>0" ng-click="clickSearchTextClear()"></a>
                                     </div>
                                 </div>

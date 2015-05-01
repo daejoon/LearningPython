@@ -8,9 +8,14 @@
         .controller(controllerName, [
             '$scope', '$rootScope', '$timeout', '$element', '$q', 'recentNoteListSvc', 'quicksilverModelSvc',
             function($scope, $rootScope, $timeout, $element, $q, recentNoteListSvc, quicksilverModelSvc) {
+                'use strict';
+
                 $scope.recentNoteListIndex = -1;
                 $scope.recentNoteList = [];
 
+                /**
+                 * 최근 사용목록 리스트를 갱신한다.
+                 */
                 $scope.refash = function () {
                     recentNoteListSvc
                         .getRecentNoteList()
@@ -23,12 +28,18 @@
                         });
                 };
 
+                /**
+                 * 최근 노트를 클릭한다.
+                 * @param $index
+                 */
                 $scope.clickRecentNote = function ($index) {
-                    console.log("Recent click: " + $index);
                     $rootScope.$broadcast("notebookListCtrl:selectNoteBook", $scope.recentNoteList[$index]);
                 };
 
-                $scope.$on(controllerName + ':changeNoteList', function (e) {
+                /**
+                 * 변경 이벤트
+                 */
+                $scope.$on('recentNoteListCtrl:changeNoteList', function (e) {
                     $scope.refash();
                 });
 

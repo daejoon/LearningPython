@@ -108,7 +108,7 @@ class TrashView(View):
     def delete(self, request, *args, **kwargs):
         # 실제 테이블에서 삭제가 이루어진다.
         try:
-            if 'note_id' in kwargs:
+            if 'note_id' in kwargs and kwargs['note_id'] != None:
                 Note.objects.filter(pk=kwargs['note_id']).delete()
             else:
                 Note.objects.filter(isDelete=True).delete()

@@ -1,10 +1,12 @@
 __author__ = 'kdj'
+import json
+
 from django.http import JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.query import QuerySet
 from django.db import models
 from django.forms.models import model_to_dict
-import json
+
 
 class AjaxResponse(JsonResponse):
     def __init__(self, data={}, paramDic={}, encoder=DjangoJSONEncoder, safe=True, **kwargs):
@@ -35,7 +37,11 @@ class AjaxRequest(object):
         self.request = request
 
     def getData(self):
-        return json.loads(self.request.body)['data']
+        data = json.loads(self.request.body)
+        if 'data' in data:
+            return data['data']
+        else:
+            return data
 
     def getRequest(self):
         return self.request

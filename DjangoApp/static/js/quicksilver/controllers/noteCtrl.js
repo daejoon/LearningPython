@@ -21,7 +21,8 @@
                 $scope.searchText = "";
 
                 $scope.saveNote = function (noteObj) {
-                    noteSvc.addNote(noteObj)
+                    noteSvc
+                        .addNote(noteObj)
                         .success(function (data, status, headers, config) {
                             // $scope.clickRecentNote 이벤트와 충돌이 난다. 우선 이렇게 땜빵을 ...
                             $timeout(function () {
