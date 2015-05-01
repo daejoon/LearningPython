@@ -4,3 +4,7 @@
 logs/
 
 db.sqlite3
+*.ini
+*.log
+*.pid
+*.conf
