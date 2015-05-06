@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from quicksilver.models import NoteBook, Note
+
 
 # Register your models here.
 
