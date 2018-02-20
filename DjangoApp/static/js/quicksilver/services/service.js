@@ -61,9 +61,11 @@
                     return $http.get("/quicksilver/notebook");
                 },
                 addNoteBook: function(notebook) {
+                    console.log("addNoteBook", notebook);
                     return $http.put("/quicksilver/notebook", {data:notebook});
                 },
                 deleteNoteBook: function(notebook) {
+                    console.log("deleteNoteBook", notebook);
                     return $http.delete("/quicksilver/notebook/"+notebook.id);
                 },
                 getTrashNoteList: function() {

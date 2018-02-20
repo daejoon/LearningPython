@@ -173,10 +173,10 @@
 {% endblock content %}
 
 {% block script %}
-<script src="{% static 'js/quicksilver/app.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksilver/controllers/notebookListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksilver/controllers/noteCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksilver/controllers/noteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksilver/controllers/recentNoteListCtrl.js?v=' %}{{ MY_SETTING.version }}"></script>
-<script src="{% static 'js/quicksilver/services/service.js?v=' %}{{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/app.js' %}?v={{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/notebookListCtrl.js' %}?v={{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/noteCtrl.js' %}?v={{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/noteListCtrl.js' %}?v={{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/controllers/recentNoteListCtrl.js' %}?v={{ MY_SETTING.version }}"></script>
+<script src="{% static 'js/quicksilver/services/service.js' %}?v={{ MY_SETTING.version }}"></script>
 {% endblock script %}

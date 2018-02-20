@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+APPEND_SLASH=False
+
 
 # Application definition
 
@@ -165,5 +167,6 @@ LOGGING = {
 
 # 개인 설정
 MY_SETTING = {
-    'version': '20150427'
+    'version': '1'
 }
+

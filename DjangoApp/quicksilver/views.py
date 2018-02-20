@@ -8,14 +8,14 @@ from django.forms.models import model_to_dict
 from django.db.models import Q
 
 from django.utils import timezone
-from django.utils.log import getLogger
+import logging
 
 from quicksilver.decorations.set_variable import setTplViewVariable
 from quicksilver.utils.ajax_util import AjaxResponse, AjaxRequest
 from quicksilver.models import NoteBook, Note
 
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 class HomeView(TemplateView):
@@ -86,10 +86,10 @@ class NotebookListView(View):
             model = NoteBook()
 
         model.modifyDate = timezone.now()
-        for name in  NoteBook._meta.get_all_field_names():
-            if name in data:
-                if not (bool(re.search('date', name, flags=re.IGNORECASE)) or bool(re.search('id', name, flags=re.IGNORECASE))):
-                    model.__dict__[name] = data[name]
+        for field in  NoteBook._meta.get_fields():
+            if field.name in data:
+                if not (bool(re.search('date', field.name, flags=re.IGNORECASE)) or bool(re.search('id', field.name, flags=re.IGNORECASE))):
+                    model.__dict__[field.name] = data[field.name]
 
         model.save()
         notes = Note.objects.filter(notebook__pk=model.pk, isDelete=False)
@@ -179,10 +179,10 @@ class NoteView(View):
                 model = Note()
 
             model.modifyDate = timezone.now()
-            for name in  Note._meta.get_all_field_names():
-                if name in data:
-                    if not (bool(re.search('date', name, flags=re.IGNORECASE)) or bool(re.search('^id$', name, flags=re.IGNORECASE))):
-                        model.__dict__[name] = data[name]
+            for field in  Note._meta.get_fields():
+                if field.name in data:
+                    if not (bool(re.search('date', field.name, flags=re.IGNORECASE)) or bool(re.search('^id$', field.name, flags=re.IGNORECASE))):
+                        model.__dict__[field.name] = data[field.name]
 
             notebook = NoteBook.objects.get(pk=data['notebook'])
             model.notebook = notebook

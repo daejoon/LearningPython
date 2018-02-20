@@ -5,8 +5,8 @@ LearningPython
 
 Server-Side Stack
 -----------------
-- [Python](https://www.python.org/) 2.7.12
-- [Django](https://www.djangoproject.com/) 1.8
+- [Python](https://www.python.org/) 2.7.14
+- [Django](https://www.djangoproject.com/) 1.11.10
 
 Client-Side Stack
 -----------------
