@@ -22,16 +22,16 @@ Djanggo와 AngularJs를 이용한 노트 앱입니다.
 - [ng-context-menu](https://github.com/ianwalter/ng-context-menu)
 
 ## 실행방법
-1. `DjangoApp`  폴더로 이동
-  ```
-  $ cd DjangoApp
-  ```
-1. `python manage.py migrate` 입력
-  ```
-  $ python manage.py migrate
-  ```
-1. `python manage.py runserver 8888` 입력
-  ```
-  $ python manage.py runserver 8888
-  ```
-1. 브라우저에서 `http://localhost:8888` 입력
+- `DjangoApp`  폴더로 이동
+    ```
+    $ cd DjangoApp
+    ```
+- `python manage.py migrate` 입력
+    ```
+    $ python manage.py migrate
+    ```
+- `python manage.py runserver 8888` 입력
+    ```
+    $ python manage.py runserver 8888
+    ```
+- 브라우저에서 `http://localhost:8888` 입력
